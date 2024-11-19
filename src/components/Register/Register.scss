@@ -1,0 +1,72 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixins" as *;
+@use "../../styles//partials/fonts" as *;
+.register {
+  color: $reg-primary-color;
+  @include container;
+  @include tablet {
+    padding-top: 2rem;
+  }
+  &__title {
+    display: flex;
+    justify-content: center;
+  }
+  &__subtitle {
+    @include text-style(0.9, 1, 100);
+  }
+  &__label {
+    width: 100%;
+    font-size: 0.9rem;
+  }
+  &__input {
+    width: 100%;
+    @include tb-margin(0.5, 0.5);
+    font-size: 0.9rem;
+    font-family: "Poppins";
+    @include text-field;
+
+    &--select {
+      flex: 1;
+      width: 100%;
+      padding: 0.5rem;
+      padding-left: 0.9rem;
+      font-size: 0.9rem;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      background-color: $reg-primary-color;
+      color: #bdd8e9;
+      appearance: none;
+      background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 5"><path fill="%23a4becd" d="M2 0L0 2h4z"/></svg>');
+      background-repeat: no-repeat;
+      background-position: right 0.6rem center;
+      @include tb-margin(1, 1);
+      background-size: 0.8rem;
+      cursor: pointer;
+    }
+    &--textarea {
+      min-height: 4rem;
+    }
+  }
+
+  &__upload {
+    @include secondary-button;
+    @include tb-margin(1, 1);
+  }
+  &__img {
+    display: flex;
+    justify-content: center;
+    @include tb-margin(2, 1);
+  }
+  &__prev {
+    width: 100%;
+    border: 1px solid white;
+    border-radius: 20px;
+    padding: 1rem;
+  }
+  &__submit {
+    @include primary-button;
+  }
+  &__error {
+    font-size: 0.7rem;
+  }
+}

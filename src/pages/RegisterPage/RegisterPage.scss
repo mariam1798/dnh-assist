@@ -1,0 +1,14 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixins" as *;
+.registeration {
+  background-color: $reg_background-color;
+  height: 100vh;
+
+  &__image {
+    width: 100%;
+    display: none;
+    @include tablet {
+      display: flex;
+    }
+  }
+}

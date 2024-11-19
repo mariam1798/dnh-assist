@@ -1,0 +1,11 @@
+@use "./styles/partials/mixins" as *;
+@use "./styles/partials/variables" as *;
+@use "./styles/partials/resets";
+@use "./styles/partials/fonts";
+
+.container {
+  @include tb-margin(1, 1);
+  @include tablet {
+    margin: 2rem;
+  }
+}

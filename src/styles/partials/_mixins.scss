@@ -88,9 +88,10 @@
 @mixin secondary-button {
   @include custom-button;
   background-color: transparent;
-  color: $secondary-text-color;
+  color: $reg-primary-color;
   border-radius: 10px;
-  border: solid 2px transparent;
+  border: solid 2px $reg-primary-color;
+
   &:hover {
     background-color: $primary-background-color;
     color: $primary-text-color;
@@ -99,11 +100,16 @@
 
 @mixin text-field {
   background-color: $reg-primary-color;
+  color: #bdd8e9;
   border-radius: 10px;
   outline: 0;
   border: none;
   height: 1rem;
-  color: $secondary-text-color;
+  &::placeholder {
+    color: #a4becd;
+    opacity: 1;
+  }
+
   @include container;
 
   @include tablet {

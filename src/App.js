@@ -4,6 +4,7 @@ import LoginPage from "./pages/LoginPage/LoginPage";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import UsersPage from "./pages/UsersPage/UsersPage";
+import "./App.scss";
 
 function App() {
   return (
