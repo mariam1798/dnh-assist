@@ -2,13 +2,25 @@
 @use "../../styles/partials/mixins" as *;
 .registeration {
   background-color: $reg_background-color;
-  height: 100vh;
+  min-height: 100vh;
+  margin: 0 auto;
 
   &__image {
     width: 100%;
     display: none;
     @include tablet {
       display: flex;
+    }
+    @include desktop {
+      width: 50%;
+      justify-content: center;
+    }
+  }
+
+  &__wrap {
+    @include desktop {
+      display: flex;
+      flex-direction: row;
     }
   }
 }

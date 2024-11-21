@@ -7,12 +7,14 @@ export default function RegisterPage() {
   return (
     <main className="registeration">
       <div className="registeration___wrapper">
-        <img
-          className="registeration__image"
-          src={placeholder}
-          alt="dental placeholder"
-        />
-        <Register />
+        <div className="registeration__wrap">
+          <img
+            className="registeration__image"
+            src={placeholder}
+            alt="dental placeholder"
+          />
+          <Register />
+        </div>
       </div>
     </main>
   );

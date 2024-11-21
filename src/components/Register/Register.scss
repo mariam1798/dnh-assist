@@ -3,16 +3,31 @@
 @use "../../styles//partials/fonts" as *;
 .register {
   color: $reg-primary-color;
+  height: 100vh;
   @include container;
   @include tablet {
-    padding-top: 2rem;
+    @include tb-padding(2, 3);
+    @include lr-padding(7, 7);
   }
+  @include desktop {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0;
+  }
+
   &__title {
     display: flex;
     justify-content: center;
+    @include desktop {
+      font-size: 1.5rem;
+    }
   }
   &__subtitle {
     @include text-style(0.9, 1, 100);
+    display: flex;
+    justify-content: center;
   }
   &__label {
     width: 100%;
@@ -42,6 +57,9 @@
       @include tb-margin(1, 1);
       background-size: 0.8rem;
       cursor: pointer;
+      @include tablet {
+        padding: 1rem;
+      }
     }
     &--textarea {
       min-height: 4rem;
@@ -51,11 +69,24 @@
   &__upload {
     @include secondary-button;
     @include tb-margin(1, 1);
+    @include tablet {
+      width: 50%;
+    }
+  }
+  &__file {
+    @include tablet {
+      display: flex;
+    }
   }
   &__img {
     display: flex;
     justify-content: center;
     @include tb-margin(2, 1);
+    @include tablet {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      margin-left: 10rem;
+    }
   }
   &__prev {
     width: 100%;

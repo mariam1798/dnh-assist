@@ -110,14 +110,14 @@
     opacity: 1;
   }
 
-  @include container;
+  padding: 1rem;
 
   @include tablet {
     height: 3rem;
   }
   @include desktop {
-    margin: 0 0 1rem 0;
-    @include lr-padding(2, 0);
+    margin: 0;
+    @include lr-padding(1, 0);
   }
 }
 @mixin label($content) {

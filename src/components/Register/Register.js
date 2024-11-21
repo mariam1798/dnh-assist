@@ -157,48 +157,51 @@ export default function Register() {
       {errors.overview && (
         <p className="register__error">{errors.overview.message}</p>
       )}
-
-      <label className="register__label" htmlFor="file">
-        Upload Profile picture:
-        <Controller
-          name="file"
-          control={control}
-          rules={{
-            required: "Profile picture is required",
-          }}
-          defaultValue={[]}
-          render={({ field }) => (
-            <>
-              <label htmlFor="file" className="register__upload">
-                Upload
-              </label>
-              <input
-                id="file"
-                className={`register__input ${errors.file ? "error" : ""}`}
-                type="file"
-                style={{ display: "none" }}
-                onChange={(e) => {
-                  field.onChange(e.target.files);
-                  handleImageChange(e);
-                }}
-                onBlur={field.onBlur}
-                ref={field.ref}
-              />
-            </>
-          )}
-        />
-      </label>
-      {errors.file && <p className="register__error">{errors.file.message}</p>}
-
-      <div className="register__img">
-        {imagePreview && (
-          <img
-            className="register__prev"
-            src={imagePreview}
-            alt="Preview"
-            style={{ width: "100px", height: "100px" }}
+      <div className="register__file">
+        <label className="register__label register__label--img" htmlFor="file">
+          Upload Profile picture:
+          <Controller
+            name="file"
+            control={control}
+            rules={{
+              required: "Profile picture is required",
+            }}
+            defaultValue={[]}
+            render={({ field }) => (
+              <>
+                <label htmlFor="file" className="register__upload">
+                  Upload
+                </label>
+                <input
+                  id="file"
+                  className={`register__input ${errors.file ? "error" : ""}`}
+                  type="file"
+                  style={{ display: "none" }}
+                  onChange={(e) => {
+                    field.onChange(e.target.files);
+                    handleImageChange(e);
+                  }}
+                  onBlur={field.onBlur}
+                  ref={field.ref}
+                />
+              </>
+            )}
           />
+        </label>
+        {errors.file && (
+          <p className="register__error">{errors.file.message}</p>
         )}
+
+        <div className="register__img">
+          {imagePreview && (
+            <img
+              className="register__prev"
+              src={imagePreview}
+              alt="Preview"
+              style={{ width: "100px", height: "100px" }}
+            />
+          )}
+        </div>
       </div>
 
       <button className="register__submit" type="submit">
