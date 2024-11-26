@@ -1,0 +1,56 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixins" as *;
+
+.nav {
+  @include container;
+
+  @include tablet {
+    display: flex;
+    flex-direction: row;
+    gap: 4rem;
+  }
+
+  &__container {
+    @include tablet {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+  &__side {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    @include tablet {
+      justify-content: flex-start;
+      gap: 5rem;
+    }
+  }
+  &__logo {
+    width: 8vh;
+    display: flex;
+  }
+
+  &__watermark {
+    display: flex;
+    align-items: center;
+    width: 30%;
+
+    @include tablet {
+      width: 25%;
+      height: 1.6rem;
+      align-self: center;
+      justify-content: flex-start;
+    }
+  }
+  &__component {
+    display: none;
+    @include tablet {
+      display: flex;
+      align-items: center;
+    }
+  }
+  &__title {
+    font-size: 1.2rem;
+  }
+}

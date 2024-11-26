@@ -1,0 +1,64 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixins" as *;
+
+.search {
+  @include tablet {
+    display: flex;
+    flex-direction: row;
+  }
+
+  &__container {
+    @include tablet {
+      display: flex;
+      flex-direction: row;
+      gap: 1.5rem;
+    }
+  }
+
+  &__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    @include tb-padding(1, 1);
+    @include tablet {
+      gap: 1rem;
+    }
+  }
+
+  &__bar {
+    background-image: url("../../assets/images/icons/search.svg");
+    height: 2.3rem;
+    background-repeat: no-repeat;
+    background-position: 0.5rem;
+    background-size: 1rem;
+    text-indent: 2rem;
+    background-color: #fafafa;
+    outline: 0;
+    border: none;
+    border-radius: $border-radius;
+    width: 100%;
+
+    &::placeholder {
+      font-family: "Poppins";
+      font-size: 0.8rem;
+      color: $territary-text-color;
+
+      @include tablet {
+        font-size: 0.75rem;
+      }
+    }
+    @include tablet {
+      width: 15rem;
+      background-size: 1.2rem;
+    }
+  }
+
+  &__button {
+    @include primary-button;
+    background-image: url("../../assets/images/icons/search.svg");
+    background-size: 1.3rem;
+  }
+  &__upload {
+    min-height: 2rem;
+  }
+}

@@ -1,0 +1,31 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixins" as *;
+
+.notification {
+  display: flex;
+  align-items: center;
+  max-width: 50%;
+  justify-content: space-between;
+  gap: 1rem;
+
+  &__icons {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+  &__icon {
+    width: 1.7rem;
+  }
+
+  &__user {
+    display: flex;
+    align-items: center;
+  }
+  &__name {
+    display: none;
+  }
+
+  &__profile {
+    @include avatar;
+  }
+}

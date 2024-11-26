@@ -140,3 +140,8 @@
 @mixin box-shadow {
   box-shadow: 2px 2px 5px 5px rgba(0, 0, 0, 0.5);
 }
+@mixin avatar {
+  width: 2.7rem;
+  height: 2.7rem;
+  border-radius: 50%;
+}
