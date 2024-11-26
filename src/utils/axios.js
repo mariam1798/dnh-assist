@@ -1,4 +1,11 @@
 import axios from "axios";
+const getProfile = (token) => {
+  return axios.get(`${process.env.REACT_APP_API_BASE_URL}/users/profile`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
 
 const handleRegister = (uploadData) => {
   return axios.post(
@@ -20,4 +27,4 @@ const getUsers = () => {
   return axios.get(`${process.env.REACT_APP_API_BASE_URL}/users`);
 };
 
-export { handleRegister, postLogin, getUser, getUsers };
+export { getProfile, handleRegister, postLogin, getUser, getUsers };

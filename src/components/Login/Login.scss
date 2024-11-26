@@ -1,0 +1,88 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixins" as *;
+
+.login {
+  @include container;
+  color: reg-primary-color;
+  width: 100%;
+  @include tablet {
+    margin: 0 auto;
+  }
+
+  &__title {
+    font-size: 1.3rem;
+    display: flex;
+    justify-content: center;
+    @include desktop {
+      font-size: 2rem;
+      @include tb-margin(0, 0);
+    }
+  }
+  &__container {
+    @include tablet {
+      max-width: 20rem;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      margin: 0 auto;
+    }
+    @include desktop {
+      padding-top: 7rem;
+      max-width: 25rem;
+
+      margin-top: 10rem;
+    }
+  }
+  &__subtitle {
+    font-size: 0.7rem;
+    font-weight: 100;
+    @include desktop {
+      font-size: 0.9rem;
+    }
+  }
+  &__register {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    @include desktop {
+      font-size: 0.9rem;
+    }
+  }
+  &__navigate {
+    color: $reg-primary-color;
+    font-size: 0.7rem;
+    font-weight: 100;
+    @include tb-margin(0.7, 0.7);
+    margin-left: 0.2rem;
+    @include desktop {
+      @include tb-margin(0.85, 0.85);
+    }
+  }
+
+  &__group {
+    display: flex;
+    flex-direction: column;
+  }
+  &__label {
+    @include tb-padding(0.5, 0.5);
+  }
+  &__input {
+    @include text-field;
+  }
+  &__button {
+    @include primary-button;
+  }
+  &__checkbox {
+    @include tb-padding(1, 1);
+  }
+  input[type="checkbox"] {
+    width: 0.7rem;
+    accent-color: $reg-primary-color;
+  }
+
+  &__forget {
+    @include tb-margin(1, 1);
+    font-size: 0.7rem;
+    font-weight: 100;
+  }
+}

@@ -1,0 +1,36 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixins" as *;
+.loginp {
+  background-color: $reg_background-color;
+  margin: 0 auto;
+  height: 100vh;
+
+  &__wrap {
+    max-width: 20rem;
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+
+    @include tablet {
+      flex-direction: column;
+    }
+
+    @include desktop {
+      flex-direction: row;
+      max-width: 100rem;
+      margin: 0;
+    }
+  }
+  &__image {
+    width: 100%;
+    display: none;
+    @include tablet {
+      display: flex;
+    }
+    @include desktop {
+      width: 50%;
+      justify-content: center;
+      height: 100vh;
+    }
+  }
+}

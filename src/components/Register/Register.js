@@ -67,7 +67,7 @@ export default function Register() {
       {errorMessage && <p className="register__error">{errorMessage}</p>}
 
       <label className="register__label" htmlFor="name">
-        Name:
+        <h3 className="register__name">Name:</h3>
         <input
           id="name"
           className={`register__input ${errors.Name ? "error" : ""}`}
@@ -84,7 +84,7 @@ export default function Register() {
       {errors.Name && <p className="register__error">{errors.Name.message}</p>}
 
       <label className="register__label" htmlFor="email">
-        Email:
+        <h3 className="register__name"> Email:</h3>
         <input
           id="email"
           className={`register__input ${errors.Email ? "error" : ""}`}
@@ -104,7 +104,7 @@ export default function Register() {
       )}
 
       <label className="register__label" htmlFor="password">
-        Password:
+        <h3 className="register__name"> Password</h3>
         <input
           id="password"
           className={`register__input ${errors.Password ? "error" : ""}`}
@@ -124,7 +124,7 @@ export default function Register() {
       )}
 
       <label className="register__label" htmlFor="role">
-        Role:
+        <h3 className="register__name"> Role</h3>
         <select
           id="role"
           className={`register__input--select ${errors.Role ? "error" : ""}`}
@@ -138,7 +138,7 @@ export default function Register() {
       {errors.Role && <p className="register__error">{errors.Role.message}</p>}
 
       <label className="register__label" htmlFor="overview">
-        Overview:
+        <h3 className="register__name">Overview</h3>
         <textarea
           id="overview"
           className={`register__input register__input--textarea ${
@@ -159,7 +159,7 @@ export default function Register() {
       )}
       <div className="register__file">
         <label className="register__label register__label--img" htmlFor="file">
-          Upload Profile picture:
+          <h3 className="register__name">Upload Profile picture:</h3>
           <Controller
             name="file"
             control={control}

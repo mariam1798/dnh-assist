@@ -3,7 +3,7 @@
 @use "../../styles//partials/fonts" as *;
 .register {
   color: $reg-primary-color;
-  height: 100vh;
+  height: 100%;
   @include container;
   @include tablet {
     @include tb-padding(2, 3);
@@ -33,6 +33,7 @@
     width: 100%;
     font-size: 0.9rem;
   }
+
   &__input {
     width: 100%;
     @include tb-margin(0.5, 0.5);
@@ -59,6 +60,9 @@
       cursor: pointer;
       @include tablet {
         padding: 1rem;
+      }
+      @include desktop {
+        margin: 0;
       }
     }
     &--textarea {
