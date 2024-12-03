@@ -4,8 +4,8 @@
 .notification {
   display: flex;
   align-items: center;
+  justify-content: space-around;
   max-width: 50%;
-  justify-content: space-between;
   gap: 1rem;
 
   &__icons {
@@ -23,6 +23,10 @@
   }
   &__name {
     display: none;
+    @include tablet {
+      display: flex;
+      padding-right: 1rem;
+    }
   }
 
   &__profile {

@@ -1,0 +1,19 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixins" as *;
+
+.dashboard {
+  &__container {
+    display: flex;
+    flex-direction: column;
+    @include tablet {
+      flex-direction: row;
+    }
+  }
+  &__main {
+    display: flex;
+    flex-direction: column;
+    @include tablet {
+      width: 77%;
+    }
+  }
+}

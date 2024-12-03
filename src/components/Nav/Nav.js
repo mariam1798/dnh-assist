@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 
 export default function Nav() {
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768); // Mobile breakpoint
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [isTablet, setIsTablet] = useState(window.innerWidth >= 768);
 
   useEffect(() => {
@@ -35,9 +35,11 @@ export default function Nav() {
             <h1 className="nav__title">Dashboard</h1>
           </div>
         </div>
-        <Search />
+        <div className="nav__right">
+          <Search />
 
-        {isTablet && <Notification />}
+          {isTablet && <Notification />}
+        </div>
       </div>
     </nav>
   );

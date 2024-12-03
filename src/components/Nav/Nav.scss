@@ -2,12 +2,13 @@
 @use "../../styles/partials/mixins" as *;
 
 .nav {
-  @include container;
+  padding: 1rem;
 
   @include tablet {
     display: flex;
-    flex-direction: row;
-    gap: 4rem;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 100vh;
   }
 
   &__container {
@@ -20,10 +21,9 @@
   &__side {
     display: flex;
     justify-content: space-between;
-    width: 100%;
+
     @include tablet {
       justify-content: flex-start;
-      gap: 5rem;
     }
   }
   &__logo {
@@ -37,6 +37,7 @@
     width: 30%;
 
     @include tablet {
+      display: none;
       width: 25%;
       height: 1.6rem;
       align-self: center;
@@ -52,5 +53,18 @@
   }
   &__title {
     font-size: 1.2rem;
+    @include tablet {
+      padding-right: 1rem;
+    }
+    @include desktop {
+      font-size: 1.8rem;
+    }
+  }
+  &__right {
+    @include tablet {
+      display: flex;
+      justify-content: space-between;
+      gap: 2rem;
+    }
   }
 }

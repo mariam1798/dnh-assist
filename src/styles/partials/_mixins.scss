@@ -120,11 +120,9 @@
     @include lr-padding(1, 0);
   }
 }
-@mixin label($content) {
+@mixin label {
   position: relative;
   &:hover::after {
-    content: $content;
-    background-color: $secondary-bg-color;
     border: $divider-line;
     color: $primary-accent-color;
     padding: 0.7rem;
