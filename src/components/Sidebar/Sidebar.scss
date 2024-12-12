@@ -21,7 +21,7 @@
       max-width: 7rem;
       height: 1.6rem;
       justify-content: flex-start;
-      margin-left: 3rem;
+      margin-left: 1.7rem;
     }
   }
 
@@ -30,6 +30,7 @@
     list-style: none;
     @include tablet {
       padding-top: 2rem;
+      padding-left: 1.5rem;
     }
   }
   &__item {
@@ -39,13 +40,18 @@
     &:hover {
       text-decoration: underline;
     }
+
     &--profile {
       padding-top: 4rem;
     }
   }
-
+  &__link {
+    width: 100%;
+  }
   &__label {
     padding-left: 0.5rem;
+    width: 100%;
+    font-size: 0.9rem;
     @include desktop {
       font-size: 1.5rem;
     }

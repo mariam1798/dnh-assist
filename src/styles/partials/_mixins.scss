@@ -88,9 +88,10 @@
 @mixin secondary-button {
   @include custom-button;
   background-color: transparent;
-  color: $reg-primary-color;
+  color: $primary-background-color;
   border-radius: 10px;
-  border: solid 2px $reg-primary-color;
+  border: solid 2px $primary-background-color;
+  font-size: 0.7rem;
 
   &:hover {
     background-color: $primary-background-color;

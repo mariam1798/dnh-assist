@@ -2,6 +2,7 @@ import React from "react";
 import Nav from "../../components/Nav/Nav";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import "./Dashboard.scss";
+import Main from "../../components/Main/Main";
 
 export default function Dashboard() {
   return (
@@ -11,7 +12,7 @@ export default function Dashboard() {
         <div className="dashboard__main">
           <Nav />
           <div className="dashboard__content">
-            <h1>Dashboard Content</h1>
+            <Main />
           </div>
         </div>
       </div>

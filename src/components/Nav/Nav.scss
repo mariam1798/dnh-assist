@@ -2,20 +2,24 @@
 @use "../../styles/partials/mixins" as *;
 
 .nav {
-  padding: 1rem;
+  padding: 0.5rem;
 
   @include tablet {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    max-width: 100vh;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
   &__container {
     @include tablet {
       width: 100%;
+      max-width: 100%;
       display: flex;
-      justify-content: space-between;
+      justify-content: space-around;
+      flex-direction: row;
+      flex-wrap: wrap;
     }
   }
   &__side {
@@ -54,7 +58,7 @@
   &__title {
     font-size: 1.2rem;
     @include tablet {
-      padding-right: 1rem;
+      padding-right: 0.5rem;
     }
     @include desktop {
       font-size: 1.8rem;
@@ -63,8 +67,9 @@
   &__right {
     @include tablet {
       display: flex;
-      justify-content: space-between;
-      gap: 2rem;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      flex-direction: row;
     }
   }
 }
