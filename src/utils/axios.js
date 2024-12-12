@@ -20,6 +20,14 @@ const postLogin = (formData) => {
   });
 };
 
+export const createBooking = async (bookingDetails) => {
+  const response = await axios.post(
+    `${process.env.REACT_APP_API_BASE_URL}/booking/booking`,
+    bookingDetails
+  );
+  return response.data;
+};
+
 const getUser = (userId) => {
   return axios.get(`${process.env.REACT_APP_API_BASE_URL}/users/${userId}`);
 };

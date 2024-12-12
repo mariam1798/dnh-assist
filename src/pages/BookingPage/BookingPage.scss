@@ -1,0 +1,136 @@
+.booking {
+  max-width: 900px;
+  margin: 2rem auto;
+  font-family: "Arial", sans-serif;
+  padding: 1.5rem;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+  h1 {
+    text-align: center;
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 1.5rem;
+  }
+
+  &__error {
+    color: #d9534f;
+    background-color: #f9e2e1;
+    padding: 0.8rem;
+    border: 1px solid #d9534f;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  &__success {
+    color: #5cb85c;
+    background-color: #e6f9e6;
+    padding: 0.8rem;
+    border: 1px solid #5cb85c;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  &__calendar {
+    margin-bottom: 2rem;
+    text-align: center;
+
+    h2 {
+      font-size: 1.5rem;
+      color: #444;
+      margin-bottom: 1rem;
+    }
+
+    .react-calendar {
+      border: none;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin: 0 auto;
+
+      &__tile--now {
+        background-color: #007bff !important;
+        color: white !important;
+        border-radius: 5px;
+      }
+
+      &__tile--active {
+        background-color: #007bff !important;
+        color: white !important;
+        border-radius: 5px;
+      }
+    }
+  }
+
+  &__times {
+    text-align: center;
+
+    h2 {
+      font-size: 1.5rem;
+      color: #444;
+      margin-bottom: 1rem;
+    }
+
+    &__time-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+      list-style: none;
+      padding: 0;
+
+      button {
+        padding: 0.5rem 1rem;
+        background-color: #e9ecef;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1rem;
+        color: #555;
+        transition: all 0.3s ease;
+
+        &:hover {
+          background-color: #007bff;
+          color: white;
+        }
+
+        &.booking-page__time--selected {
+          background-color: #007bff;
+          color: white;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+
+  &__confirmation {
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    color: #333;
+    text-align: center;
+  }
+
+  &__confirm {
+    display: block;
+    margin: 2rem auto 0;
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+    color: white;
+    background-color: #28a745;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #218838;
+    }
+
+    &:disabled {
+      background-color: #6c757d;
+      cursor: not-allowed;
+    }
+  }
+}
