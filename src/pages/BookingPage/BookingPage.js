@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Calendar from "react-calendar";
-import { createBooking } from "../../utils/axios";
+import { createBooking, getBookedSlots } from "../../utils/axios";
 import "react-calendar/dist/Calendar.css";
 import "./BookingPage.scss";
 
@@ -10,6 +10,7 @@ const BookingPage = () => {
   const [contactDetails, setContactDetails] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [availableSlots, setAvailableSlots] = useState([]);
 
   useEffect(() => {
     const savedDetails = JSON.parse(localStorage.getItem("contactDetails"));
@@ -18,35 +19,43 @@ const BookingPage = () => {
     }
   }, []);
 
-  const convertTo24HourFormat = (time12h) => {
-    const [time, modifier] = time12h.split(" ");
-    let [hours, minutes] = time.split(":");
+  useEffect(() => {
+    const fetchAvailableSlots = async () => {
+      try {
+        const response = await getBookedSlots(date.toISOString().split("T")[0]);
+        setAvailableSlots(response || []);
+      } catch (error) {
+        console.error("Error fetching available slots:", error);
+      }
+    };
 
-    if (modifier === "PM" && hours !== "12") {
-      hours = parseInt(hours, 10) + 12;
-    } else if (modifier === "AM" && hours === "12") {
-      hours = "00";
-    }
-
-    return `${String(hours).padStart(2, "0")}:${minutes}:00`;
-  };
+    fetchAvailableSlots();
+  }, [date]);
 
   const generateTimes = () => {
     const times = [];
     for (let hour = 9; hour <= 16; hour++) {
-      times.push(
-        `${hour > 12 ? hour - 12 : hour}:00 ${hour >= 12 ? "PM" : "AM"}`
-      );
-      times.push(
-        `${hour > 12 ? hour - 12 : hour}:30 ${hour >= 12 ? "PM" : "AM"}`
-      );
+      times.push(`${String(hour).padStart(2, "0")}:00:00`);
+      times.push(`${String(hour).padStart(2, "0")}:30:00`);
     }
     return times;
   };
 
+  const filterAvailableTimes = () => {
+    const allTimes = generateTimes();
+    return allTimes.filter((time) => availableSlots.includes(time));
+  };
+
   const isWeekend = (date) => {
-    const day = date.getDay(); // 0 for Sunday, 6 for Saturday
+    const day = date.getDay();
     return day === 0 || day === 6;
+  };
+
+  const isInvalidDate = (selectedDate) => {
+    const today = new Date();
+    const minDate = new Date(today);
+    minDate.setDate(today.getDate() + 3);
+    return selectedDate < minDate;
   };
 
   const handleBooking = async () => {
@@ -55,24 +64,24 @@ const BookingPage = () => {
       return;
     }
 
-    if (isWeekend(date)) {
-      setErrorMessage("Bookings are not allowed on weekends.");
-      return;
-    }
-
     const bookingDetails = {
       ...contactDetails,
       date: date.toISOString().split("T")[0],
-      time: convertTo24HourFormat(selectedTime),
+      time: selectedTime,
     };
+
+    console.log("Booking Details Sent to Backend:", bookingDetails);
 
     try {
       const response = await createBooking(bookingDetails);
-      console.log("Response from createBooking:", response);
-
       if (response && response.message) {
         setSuccessMessage(response.message);
         setErrorMessage("");
+        setSelectedTime("");
+
+        setAvailableSlots((prevSlots) =>
+          prevSlots.filter((time) => time !== selectedTime)
+        );
       } else {
         throw new Error("Unexpected response from server.");
       }
@@ -99,7 +108,7 @@ const BookingPage = () => {
 
   return (
     <div className="booking">
-      <h1>Book an Appointment</h1>
+      <h1 className="booking__title">Book an Appointment</h1>
 
       {errorMessage && <p className="booking__error">{errorMessage}</p>}
       {successMessage && <p className="booking__success">{successMessage}</p>}
@@ -108,39 +117,36 @@ const BookingPage = () => {
         <h2>Select a Date</h2>
         <Calendar
           onChange={(newDate) => {
-            if (isWeekend(newDate)) {
-              setErrorMessage("Bookings are not allowed on weekends.");
-              setSelectedTime("");
-            } else {
-              setErrorMessage("");
-            }
             setDate(newDate);
+            setSelectedTime("");
+            setErrorMessage("");
           }}
           value={date}
+          tileDisabled={({ date }) => isWeekend(date) || isInvalidDate(date)}
         />
         <h3>Selected Date: {currentDate}</h3>
       </div>
 
       <div className="booking__times">
         <h2>Available Times</h2>
-        <ul className="booking__time-list">
-          {generateTimes().map((time) => (
-            <li key={time}>
+        <ul className="booking__list">
+          {filterAvailableTimes().map((time) => (
+            <li className="booking__item" key={time}>
               <button
                 onClick={() => setSelectedTime(time)}
                 className={`booking__time ${
                   selectedTime === time ? "booking__time--selected" : ""
                 }`}
-                disabled={isWeekend(date)}
               >
-                {time}
+                {time.slice(0, 5)}{" "}
+                {parseInt(time.slice(0, 2)) >= 12 ? "PM" : "AM"}
               </button>
             </li>
           ))}
         </ul>
       </div>
 
-      {selectedTime && !isWeekend(date) && (
+      {selectedTime && (
         <p className="booking__confirmation">
           You have selected: <strong>{selectedTime}</strong>
         </p>
@@ -149,7 +155,7 @@ const BookingPage = () => {
       <button
         onClick={handleBooking}
         className="booking__confirm"
-        disabled={!selectedTime || isWeekend(date)}
+        disabled={!selectedTime}
       >
         Confirm Booking
       </button>

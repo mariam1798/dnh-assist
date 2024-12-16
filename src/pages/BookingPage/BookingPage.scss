@@ -1,13 +1,15 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixins" as *;
+
 .booking {
   max-width: 900px;
   margin: 2rem auto;
-  font-family: "Arial", sans-serif;
   padding: 1.5rem;
-  background-color: #f9f9f9;
+  background-color: $territary-background-color;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 
-  h1 {
+  &__title {
     text-align: center;
     font-size: 2rem;
     color: #333;
@@ -15,20 +17,20 @@
   }
 
   &__error {
-    color: #d9534f;
-    background-color: #f9e2e1;
+    color: white;
+    background-color: $secondary-accent-color;
     padding: 0.8rem;
-    border: 1px solid #d9534f;
+    border: 1px solid$secondary-accent-color;
     border-radius: 5px;
     margin-bottom: 1rem;
     text-align: center;
   }
 
   &__success {
-    color: #5cb85c;
-    background-color: #e6f9e6;
+    color: white;
+    background-color: $primary-accent-color;
     padding: 0.8rem;
-    border: 1px solid #5cb85c;
+    border: 1px solid $primary-accent-color;
     border-radius: 5px;
     margin-bottom: 1rem;
     text-align: center;
@@ -51,13 +53,13 @@
       margin: 0 auto;
 
       &__tile--now {
-        background-color: #007bff !important;
+        background-color: $secondary-background-color !important;
         color: white !important;
         border-radius: 5px;
       }
 
       &__tile--active {
-        background-color: #007bff !important;
+        background-color: $primary-accent-color !important;
         color: white !important;
         border-radius: 5px;
       }
@@ -73,13 +75,14 @@
       margin-bottom: 1rem;
     }
 
-    &__time-list {
+    &__list {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       gap: 0.5rem;
       list-style: none;
       padding: 0;
+      text-decoration: none;
 
       button {
         padding: 0.5rem 1rem;
@@ -104,6 +107,9 @@
       }
     }
   }
+  &__item {
+    list-style: none;
+  }
 
   &__confirmation {
     margin-top: 1rem;
@@ -118,14 +124,14 @@
     padding: 0.8rem 2rem;
     font-size: 1rem;
     color: white;
-    background-color: #28a745;
+    background-color: $primary-accent-color;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 
     &:hover {
-      background-color: #218838;
+      background-color: $primary-accent-color;
     }
 
     &:disabled {

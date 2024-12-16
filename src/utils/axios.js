@@ -27,6 +27,20 @@ export const createBooking = async (bookingDetails) => {
   );
   return response.data;
 };
+const getBookedSlots = async (date) => {
+  try {
+    const response = await axios.get(
+      `${process.env.REACT_APP_API_BASE_URL}/booking/available`,
+      {
+        params: { date },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching booked slots:", error);
+    throw error;
+  }
+};
 
 const getUser = (userId) => {
   return axios.get(`${process.env.REACT_APP_API_BASE_URL}/users/${userId}`);
@@ -35,4 +49,11 @@ const getUsers = () => {
   return axios.get(`${process.env.REACT_APP_API_BASE_URL}/users`);
 };
 
-export { getProfile, handleRegister, postLogin, getUser, getUsers };
+export {
+  getBookedSlots,
+  getProfile,
+  handleRegister,
+  postLogin,
+  getUser,
+  getUsers,
+};
