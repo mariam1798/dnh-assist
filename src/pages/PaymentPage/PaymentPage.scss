@@ -1,0 +1,22 @@
+.pay-now {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.pay-now h1 {
+  text-align: center;
+}
+
+.error {
+  color: red;
+}
+
+.success {
+  color: green;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}

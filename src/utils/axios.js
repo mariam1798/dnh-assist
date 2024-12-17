@@ -6,7 +6,20 @@ const getProfile = (token) => {
     },
   });
 };
-
+const createPaymentIntent = async (paymentDetails) => {
+  try {
+    const response = await axios.post(
+      `${process.env.REACT_APP_API_BASE_URL}/payment/createPayment`,
+      paymentDetails
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error creating payment intent:", error);
+    throw (
+      error.response?.data || error.message || "Failed to create payment intent"
+    );
+  }
+};
 const handleRegister = (uploadData) => {
   return axios.post(
     `${process.env.REACT_APP_API_BASE_URL}/users/register`,
@@ -56,4 +69,5 @@ export {
   postLogin,
   getUser,
   getUsers,
+  createPaymentIntent,
 };

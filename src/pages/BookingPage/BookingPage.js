@@ -1,22 +1,33 @@
 import React, { useState, useEffect } from "react";
 import Calendar from "react-calendar";
-import { createBooking, getBookedSlots } from "../../utils/axios";
+import {
+  createBooking,
+  getBookedSlots,
+  createPaymentIntent,
+} from "../../utils/axios";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
 import "react-calendar/dist/Calendar.css";
 import "./BookingPage.scss";
+
+const stripePromise = loadStripe(
+  "pk_test_51PLKOFS8qWjUhD08L7a5HC49cEmivRfTAEdOSDrckA03Mb7HgjuzpvvgEbZRREoobCaZU8w7aY2BWvxGPrPgFqnC00GgJfzme2"
+);
 
 const BookingPage = () => {
   const [date, setDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState("");
+  const [formattedDateTime, setFormattedDateTime] = useState("");
   const [contactDetails, setContactDetails] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [availableSlots, setAvailableSlots] = useState([]);
+  const [clientSecret, setClientSecret] = useState("");
+  const [isBookingComplete, setIsBookingComplete] = useState(false);
 
   useEffect(() => {
     const savedDetails = JSON.parse(localStorage.getItem("contactDetails"));
-    if (savedDetails) {
-      setContactDetails(savedDetails);
-    }
+    if (savedDetails) setContactDetails(savedDetails);
   }, []);
 
   useEffect(() => {
@@ -46,16 +57,12 @@ const BookingPage = () => {
     return allTimes.filter((time) => availableSlots.includes(time));
   };
 
-  const isWeekend = (date) => {
-    const day = date.getDay();
-    return day === 0 || day === 6;
-  };
-
-  const isInvalidDate = (selectedDate) => {
-    const today = new Date();
-    const minDate = new Date(today);
-    minDate.setDate(today.getDate() + 3);
-    return selectedDate < minDate;
+  const formatDateTime = (date, time) => {
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    const formattedDate = date.toLocaleDateString(undefined, options);
+    return `${formattedDate} at ${time.slice(0, 5)} ${
+      parseInt(time.slice(0, 2)) >= 12 ? "PM" : "AM"
+    }`;
   };
 
   const handleBooking = async () => {
@@ -70,41 +77,26 @@ const BookingPage = () => {
       time: selectedTime,
     };
 
-    console.log("Booking Details Sent to Backend:", bookingDetails);
-
     try {
       const response = await createBooking(bookingDetails);
       if (response && response.message) {
         setSuccessMessage(response.message);
         setErrorMessage("");
-        setSelectedTime("");
 
-        setAvailableSlots((prevSlots) =>
-          prevSlots.filter((time) => time !== selectedTime)
-        );
-      } else {
-        throw new Error("Unexpected response from server.");
+        // Create Stripe Payment Intent
+        const paymentResponse = await createPaymentIntent({
+          bookingId: response.bookingId,
+          amount: 5000,
+          currency: "gbp",
+        });
+        setClientSecret(paymentResponse.clientSecret);
+        setIsBookingComplete(true);
       }
     } catch (error) {
       console.error("Error occurred:", error);
-
-      const message =
-        error.response?.data?.error ||
-        error.message ||
-        "Failed to create booking.";
-      setErrorMessage(message);
-      setSuccessMessage("");
+      setErrorMessage("Failed to create booking.");
     }
   };
-
-  const formatDate = (date) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  };
-
-  const currentDate = formatDate(date);
 
   return (
     <div className="booking">
@@ -114,28 +106,27 @@ const BookingPage = () => {
       {successMessage && <p className="booking__success">{successMessage}</p>}
 
       <div className="booking__calendar">
-        <h2>Select a Date</h2>
         <Calendar
           onChange={(newDate) => {
             setDate(newDate);
             setSelectedTime("");
-            setErrorMessage("");
+            setFormattedDateTime("");
           }}
           value={date}
-          tileDisabled={({ date }) => isWeekend(date) || isInvalidDate(date)}
         />
-        <h3>Selected Date: {currentDate}</h3>
       </div>
 
       <div className="booking__times">
-        <h2>Available Times</h2>
         <ul className="booking__list">
           {filterAvailableTimes().map((time) => (
             <li className="booking__item" key={time}>
               <button
-                onClick={() => setSelectedTime(time)}
-                className={`booking__time ${
-                  selectedTime === time ? "booking__time--selected" : ""
+                onClick={() => {
+                  setSelectedTime(time);
+                  setFormattedDateTime(formatDateTime(date, time));
+                }}
+                className={`booking__button ${
+                  selectedTime === time ? "selected" : ""
                 }`}
               >
                 {time.slice(0, 5)}{" "}
@@ -146,19 +137,19 @@ const BookingPage = () => {
         </ul>
       </div>
 
-      {selectedTime && (
+      {formattedDateTime && (
         <p className="booking__confirmation">
-          You have selected: <strong>{selectedTime}</strong>
+          You have selected: <strong>{formattedDateTime}</strong>
         </p>
       )}
 
-      <button
-        onClick={handleBooking}
-        className="booking__confirm"
-        disabled={!selectedTime}
-      >
-        Confirm Booking
-      </button>
+      {!isBookingComplete ? (
+        <button className="booking__confirm" onClick={handleBooking}>
+          Confirm Booking
+        </button>
+      ) : (
+        <h2>payment modal</h2>
+      )}
     </div>
   );
 };
