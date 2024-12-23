@@ -20,6 +20,18 @@ const createPaymentIntent = async (paymentDetails) => {
     );
   }
 };
+const confirmPayment = async (data) => {
+  try {
+    const response = await axios.post(
+      `${process.env.REACT_APP_API_BASE_URL}/payment/confirmPayment`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error confirming payment:", error);
+    throw error.response?.data?.error || "Failed to confirm payment."; //
+  }
+};
 const handleRegister = (uploadData) => {
   return axios.post(
     `${process.env.REACT_APP_API_BASE_URL}/users/register`,
@@ -70,4 +82,5 @@ export {
   getUser,
   getUsers,
   createPaymentIntent,
+  confirmPayment,
 };

@@ -10,7 +10,7 @@ export default function Search() {
             placeholder="Find your mentor"
             name="search"
           ></input>
-          <img className="search__avatar" />
+          <img className="search__avatar" alt="search avatar" />
         </div>
       </div>
     </section>

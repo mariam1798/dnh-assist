@@ -6,8 +6,6 @@ import RegisterPage from "./pages/RegisterPage/RegisterPage";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import BookingPage from "./pages/BookingPage/BookingPage";
-import PaymentPage from "./pages/PaymentPage/PaymentPage";
-
 import "./App.scss";
 
 const stripePromise = loadStripe(
@@ -23,7 +21,6 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/" element={<Dashboard />} />
           <Route path="/booking" element={<BookingPage />} />
-          <Route path="/payment/:bookingId" element={<PaymentPage />} />
         </Routes>
       </Elements>
     </BrowserRouter>

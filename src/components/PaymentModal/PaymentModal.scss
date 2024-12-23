@@ -1,0 +1,114 @@
+@use "../../styles/partials/mixins" as *;
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/fonts";
+
+.modal {
+  position: absolute;
+  background-repeat: no-repeat;
+  background-position: 98% 2%;
+  background-color: #f6f6f6;
+  width: 100%;
+  height: 100%;
+  padding: 2rem;
+  cursor: pointer;
+  color: $primary-text-color;
+  @include tablet {
+    border-radius: $border-radius;
+    top: 20%;
+    left: 20%;
+    max-width: 60%;
+    height: 40rem;
+    @include desktop {
+      width: 50%;
+      top: 10%;
+      left: 25%;
+      height: 45rem;
+    }
+  }
+  &__icon {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &__close {
+    cursor: pointer;
+    width: 20px;
+  }
+
+  &__container {
+    margin-top: 10px;
+  }
+
+  &__title {
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  &__group {
+    margin-bottom: 15px;
+  }
+
+  &__label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+  }
+
+  &__input,
+  &__card-element {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    background-color: transparent;
+  }
+
+  &__error {
+    color: red;
+    font-size: 0.9rem;
+  }
+
+  &__success {
+    color: green;
+    font-size: 0.9rem;
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+
+  &__submit,
+  &__cancel {
+    padding: 10px 20px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+  }
+
+  &__submit {
+    background-color: #28a745;
+    color: white;
+  }
+
+  &__cancel {
+    background-color: #dc3545;
+    color: white;
+  }
+}
+
+.Overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.trigger {
+  margin-top: 6rem;
+}

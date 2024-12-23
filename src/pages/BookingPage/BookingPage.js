@@ -9,6 +9,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import "react-calendar/dist/Calendar.css";
 import "./BookingPage.scss";
+import PaymentModal from "../../components/PaymentModal/PaymentModal";
 
 const stripePromise = loadStripe(
   "pk_test_51PLKOFS8qWjUhD08L7a5HC49cEmivRfTAEdOSDrckA03Mb7HgjuzpvvgEbZRREoobCaZU8w7aY2BWvxGPrPgFqnC00GgJfzme2"
@@ -23,7 +24,12 @@ const BookingPage = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [availableSlots, setAvailableSlots] = useState([]);
   const [clientSecret, setClientSecret] = useState("");
+  const [bookingId, setBookingId] = useState(""); // NEW: State to store bookingId
   const [isBookingComplete, setIsBookingComplete] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   useEffect(() => {
     const savedDetails = JSON.parse(localStorage.getItem("contactDetails"));
@@ -82,14 +88,17 @@ const BookingPage = () => {
       if (response && response.message) {
         setSuccessMessage(response.message);
         setErrorMessage("");
+        setBookingId(response.bookingId); // Store bookingId in state
 
         // Create Stripe Payment Intent
         const paymentResponse = await createPaymentIntent({
           bookingId: response.bookingId,
-          amount: 5000,
+          amount: 5000, // Amount in pence
           currency: "gbp",
         });
+
         setClientSecret(paymentResponse.clientSecret);
+        openModal();
         setIsBookingComplete(true);
       }
     } catch (error) {
@@ -148,7 +157,15 @@ const BookingPage = () => {
           Confirm Booking
         </button>
       ) : (
-        <h2>payment modal</h2>
+        <Elements stripe={stripePromise}>
+          <PaymentModal
+            isOpen={isModalOpen}
+            handleCloseModal={closeModal}
+            clientSecret={clientSecret}
+            bookingId={bookingId} // Pass bookingId to the modal
+            contactDetails={contactDetails}
+          />
+        </Elements>
       )}
     </div>
   );

@@ -2,8 +2,6 @@
 @use "../../styles/partials/mixins" as *;
 
 .nav {
-  padding: 0.5rem;
-
   @include tablet {
     display: flex;
     align-items: center;
@@ -13,63 +11,36 @@
   }
 
   &__container {
-    @include tablet {
-      width: 100%;
-      max-width: 100%;
-      display: flex;
-      justify-content: space-around;
-      flex-direction: row;
-      flex-wrap: wrap;
-    }
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
   }
   &__side {
     display: flex;
     justify-content: space-between;
-
     @include tablet {
-      justify-content: flex-start;
+      justify-content: center;
+      width: 100%;
     }
   }
+
   &__logo {
-    width: 8vh;
+    height: 2rem;
     display: flex;
   }
 
   &__watermark {
     display: flex;
     align-items: center;
-    width: 30%;
 
+    justify-content: center;
+    margin: 0.7rem;
     @include tablet {
       display: none;
       width: 25%;
       height: 1.6rem;
       align-self: center;
       justify-content: flex-start;
-    }
-  }
-  &__component {
-    display: none;
-    @include tablet {
-      display: flex;
-      align-items: center;
-    }
-  }
-  &__title {
-    font-size: 1.2rem;
-    @include tablet {
-      padding-right: 0.5rem;
-    }
-    @include desktop {
-      font-size: 1.8rem;
-    }
-  }
-  &__right {
-    @include tablet {
-      display: flex;
-      justify-content: space-around;
-      flex-wrap: wrap;
-      flex-direction: row;
     }
   }
 }
