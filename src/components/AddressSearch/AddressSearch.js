@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { LoadScript, Autocomplete } from "@react-google-maps/api";
+import { Autocomplete } from "@react-google-maps/api";
 import "./AddressSearch.scss";
 
 const AddressSearch = ({ onAddressChange, errors }) => {
+  const googleMapsApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
+
   const [autocomplete, setAutocomplete] = useState(null);
 
   const handleLoad = (autoC) => {
@@ -53,26 +55,21 @@ const AddressSearch = ({ onAddressChange, errors }) => {
   };
 
   return (
-    <LoadScript
-      googleMapsApiKey="AIzaSyDlKlilZtuqgY1LO_UuTmP2ekiNbt_m-tc"
-      libraries={["places"]}
-    >
-      <div className="address">
-        <label className="address__label">
-          <h5 className="address__name">Search Address:</h5>
-          <Autocomplete onLoad={handleLoad} onPlaceChanged={handlePlaceChanged}>
-            <input
-              type="text"
-              className={`address__input ${
-                errors?.address ? "address__input--error" : ""
-              }`}
-              placeholder="Search for your address"
-            />
-          </Autocomplete>
-        </label>
-        {errors?.address && <p className="address__error">{errors.address}</p>}
-      </div>
-    </LoadScript>
+    <div className="address">
+      <label className="address__label">
+        <h5 className="address__name">Search Address:</h5>
+        <Autocomplete onLoad={handleLoad} onPlaceChanged={handlePlaceChanged}>
+          <input
+            type="text"
+            className={`address__input ${
+              errors?.address ? "address__input--error" : ""
+            }`}
+            placeholder="Search for your address"
+          />
+        </Autocomplete>
+      </label>
+      {errors?.address && <p className="address__error">{errors.address}</p>}
+    </div>
   );
 };
 

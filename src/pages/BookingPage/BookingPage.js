@@ -5,15 +5,11 @@ import {
   getBookedSlots,
   createPaymentIntent,
 } from "../../utils/axios";
-import { loadStripe } from "@stripe/stripe-js";
+import stripePromise from "../../utils/StripePromise";
 import { Elements } from "@stripe/react-stripe-js";
 import "react-calendar/dist/Calendar.css";
 import "./BookingPage.scss";
 import PaymentModal from "../../components/PaymentModal/PaymentModal";
-
-const stripePromise = loadStripe(
-  "pk_test_51PLKOFS8qWjUhD08L7a5HC49cEmivRfTAEdOSDrckA03Mb7HgjuzpvvgEbZRREoobCaZU8w7aY2BWvxGPrPgFqnC00GgJfzme2"
-);
 
 const BookingPage = () => {
   const [date, setDate] = useState(new Date());
