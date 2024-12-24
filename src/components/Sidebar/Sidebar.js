@@ -7,7 +7,7 @@ import DashboardIcon from "../../assets/images/icons/dashboard.png";
 import BookingsIcon from "../../assets/images/icons/calender.png";
 import ProfileIcon from "../../assets/images/icons/profile.png";
 import HelpIcon from "../../assets/images/icons/help.png";
-import Logo from "../../assets/images/logo/Logo Xero.png";
+import Logo from "../../assets/images/logo/logo1.svg";
 import close from "../../assets/images/icons/close.svg";
 import menu from "../../assets/images/icons/menu.png";
 

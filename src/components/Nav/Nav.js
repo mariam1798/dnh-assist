@@ -1,4 +1,4 @@
-import logo from "../../assets/images/logo/Logo Xero.png";
+import logo from "../../assets/images/logo/logo1.svg";
 import "./Nav.scss";
 import { Link } from "react-router-dom";
 import Sidebar from "../../components/Sidebar/Sidebar";

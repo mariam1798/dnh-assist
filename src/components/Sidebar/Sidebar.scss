@@ -47,7 +47,7 @@
       display: flex;
       align-items: center;
       justify-content: flex-start;
-      height: 3rem;
+      width: 8rem;
       margin: 1rem 2rem;
     }
   }
@@ -110,7 +110,7 @@
     cursor: pointer;
 
     @include tablet {
-      display: none; // Hide toggle button on tablet and desktop
+      display: none;
     }
   }
   &__icon {

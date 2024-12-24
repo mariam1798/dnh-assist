@@ -74,6 +74,24 @@ const getUsers = () => {
   return axios.get(`${process.env.REACT_APP_API_BASE_URL}/users`);
 };
 
+const googleMapsAxios = axios.create({
+  baseURL: "https://maps.googleapis.com/maps/api/place/autocomplete/json",
+  params: {
+    key: "AIzaSyDlKlilZtuqgY1LO_UuTmP2ekiNbt_m-tc", // Replace with your Google Maps API Key
+    types: "geocode", // Restrict results to address types
+    components: "country:gb", // Example: Restrict to UK. Adjust as needed.
+  },
+});
+
+const getAddressSuggestions = async (input) => {
+  try {
+    const response = await googleMapsAxios.get("", { params: { input } });
+    return response.data.predictions || [];
+  } catch (error) {
+    console.error("Error fetching address suggestions:", error);
+    throw error;
+  }
+};
 export {
   getBookedSlots,
   getProfile,
@@ -83,4 +101,5 @@ export {
   getUsers,
   createPaymentIntent,
   confirmPayment,
+  getAddressSuggestions,
 };

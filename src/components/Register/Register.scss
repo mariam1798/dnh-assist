@@ -4,22 +4,37 @@
 .register {
   color: $reg-primary-color;
   height: 100%;
+
   @include container;
   @include tablet {
     @include tb-padding(2, 3);
-    @include lr-padding(7, 7);
+    @include lr-padding(5, 5);
   }
+
   @include desktop {
-    margin: 0 auto;
     display: flex;
     justify-content: center;
     flex-direction: column;
-    padding: 0;
+    width: 90%;
+    padding: 1rem 3rem;
   }
 
+  &__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1rem 1rem;
+  }
+  &__subtitle {
+    margin-bottom: 2rem;
+    @include desktop {
+      margin-bottom: 1rem;
+    }
+  }
   &__title {
     display: flex;
     justify-content: center;
+    margin: 1.5rem;
     @include desktop {
       font-size: 1.5rem;
     }
@@ -29,22 +44,31 @@
     display: flex;
     justify-content: center;
   }
+
   &__label {
     width: 100%;
     font-size: 0.9rem;
+
+    &--address {
+      @include tablet {
+        max-width: 48%;
+      }
+      @include desktop {
+        max-width: 45%;
+      }
+    }
   }
 
   &__input {
-    width: 100%;
-    @include tb-margin(0.5, 0.5);
-    font-size: 0.9rem;
-    font-family: "Poppins";
     @include text-field;
+    @include desktop {
+      margin-bottom: 1rem;
+    }
 
     &--select {
       flex: 1;
       width: 100%;
-      padding: 0.5rem;
+      padding: 1rem;
       padding-left: 0.9rem;
       font-size: 0.9rem;
       border: 1px solid #ccc;
@@ -67,6 +91,16 @@
     }
     &--textarea {
       min-height: 4rem;
+    }
+  }
+  &__address {
+    width: 100%;
+    @include tablet {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      flex-direction: row;
+      justify-content: space-between;
     }
   }
 
@@ -100,8 +134,19 @@
   }
   &__submit {
     @include primary-button;
+    margin-top: 3rem;
+    @include desktop {
+      margin-top: 2rem;
+    }
   }
   &__error {
     font-size: 0.7rem;
+  }
+  &__name {
+    padding: 0;
+    margin: 0;
+    @include desktop {
+      padding-bottom: 0.5rem;
+    }
   }
 }
