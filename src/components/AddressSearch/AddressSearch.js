@@ -3,8 +3,6 @@ import { Autocomplete } from "@react-google-maps/api";
 import "./AddressSearch.scss";
 
 const AddressSearch = ({ onAddressChange, errors }) => {
-  const googleMapsApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
-
   const [autocomplete, setAutocomplete] = useState(null);
 
   const handleLoad = (autoC) => {
