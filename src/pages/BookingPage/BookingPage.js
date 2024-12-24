@@ -20,7 +20,7 @@ const BookingPage = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [availableSlots, setAvailableSlots] = useState([]);
   const [clientSecret, setClientSecret] = useState("");
-  const [bookingId, setBookingId] = useState(""); // NEW: State to store bookingId
+  const [bookingId, setBookingId] = useState("");
   const [isBookingComplete, setIsBookingComplete] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -158,7 +158,7 @@ const BookingPage = () => {
             isOpen={isModalOpen}
             handleCloseModal={closeModal}
             clientSecret={clientSecret}
-            bookingId={bookingId} // Pass bookingId to the modal
+            bookingId={bookingId}
             contactDetails={contactDetails}
           />
         </Elements>
