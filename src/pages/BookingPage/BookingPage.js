@@ -4,6 +4,7 @@ import {
   createBooking,
   getBookedSlots,
   createPaymentIntent,
+  getBlockedDates, // Import getBlockedDates from Axios utilities
 } from "../../utils/axios";
 import stripePromise from "../../utils/StripePromise";
 import { Elements } from "@stripe/react-stripe-js";
@@ -19,6 +20,7 @@ const BookingPage = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [availableSlots, setAvailableSlots] = useState([]);
+  const [blockedDates, setBlockedDates] = useState([]);
   const [clientSecret, setClientSecret] = useState("");
   const [bookingId, setBookingId] = useState("");
   const [isBookingComplete, setIsBookingComplete] = useState(false);
@@ -44,6 +46,22 @@ const BookingPage = () => {
 
     fetchAvailableSlots();
   }, [date]);
+
+  useEffect(() => {
+    const fetchBlockedDates = async () => {
+      try {
+        const response = await getBlockedDates();
+        const normalizedDates = response.map(
+          (date) => new Date(date).toISOString().split("T")[0]
+        );
+        setBlockedDates(normalizedDates);
+      } catch (error) {
+        console.error("Error fetching blocked dates:", error);
+      }
+    };
+
+    fetchBlockedDates();
+  }, []);
 
   const generateTimes = () => {
     const times = [];
@@ -75,6 +93,7 @@ const BookingPage = () => {
 
     const bookingDetails = {
       ...contactDetails,
+      address: `${contactDetails.street}, ${contactDetails.postcode}, ${contactDetails.city}, ${contactDetails.country}`,
       date: date.toISOString().split("T")[0],
       time: selectedTime,
     };
@@ -84,12 +103,15 @@ const BookingPage = () => {
       if (response && response.message) {
         setSuccessMessage(response.message);
         setErrorMessage("");
-        setBookingId(response.bookingId); // Store bookingId in state
+        setBookingId(response.bookingId);
 
-        // Create Stripe Payment Intent
+        // Fetch updated blocked dates after booking
+        const blockedResponse = await getBlockedDates();
+        setBlockedDates(blockedResponse || []);
+
         const paymentResponse = await createPaymentIntent({
           bookingId: response.bookingId,
-          amount: 5000, // Amount in pence
+          amount: 30000,
           currency: "gbp",
         });
 
@@ -101,6 +123,27 @@ const BookingPage = () => {
       console.error("Error occurred:", error);
       setErrorMessage("Failed to create booking.");
     }
+  };
+
+  const isDateBlocked = (currentDate) => {
+    const formattedDate = currentDate.toISOString().split("T")[0];
+    const dayOfWeek = currentDate.getDay();
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (dayOfWeek === 0 || dayOfWeek === 6) {
+      return true;
+    }
+
+    if (currentDate < today) {
+      return true;
+    }
+
+    if (blockedDates.includes(formattedDate)) {
+      return true;
+    }
+
+    return false;
   };
 
   return (
@@ -118,6 +161,7 @@ const BookingPage = () => {
             setFormattedDateTime("");
           }}
           value={date}
+          tileDisabled={({ date: currentDate }) => isDateBlocked(currentDate)}
         />
       </div>
 

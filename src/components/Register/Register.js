@@ -108,8 +108,17 @@ export default function Register() {
       return;
     }
 
+    // Combine address fields into a single address string (optional)
+    const fullAddress = `${formData.street}, ${formData.postcode}, ${formData.city}, ${formData.country}`;
+
+    // Prepare the final data to send
+    const finalData = {
+      ...formData,
+      fullAddress, // Add combined address if needed
+    };
+
     // Save all data to local storage
-    localStorage.setItem("contactDetails", JSON.stringify(formData));
+    localStorage.setItem("contactDetails", JSON.stringify(finalData));
     navigate("/booking");
   };
 
@@ -202,6 +211,7 @@ export default function Register() {
             country: formErrors.country,
           }}
         />
+
         <div className="register__address">
           <label className="register__label register__label--address">
             Street:

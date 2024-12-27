@@ -67,6 +67,18 @@ const getBookedSlots = async (date) => {
   }
 };
 
+export const getBlockedDates = async () => {
+  try {
+    const response = await axios.get(
+      `${process.env.REACT_APP_API_BASE_URL}/booking/block`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching blocked dates:", error);
+    throw error;
+  }
+};
+
 const getUser = (userId) => {
   return axios.get(`${process.env.REACT_APP_API_BASE_URL}/users/${userId}`);
 };
