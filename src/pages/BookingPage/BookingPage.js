@@ -4,8 +4,11 @@ import {
   createBooking,
   getBookedSlots,
   createPaymentIntent,
-  getBlockedDates, // Import getBlockedDates from Axios utilities
+  getBlockedDates,
+  getBookingDetails,
+  rescheduleBooking,
 } from "../../utils/axios";
+import { useParams, useNavigate } from "react-router-dom";
 import stripePromise from "../../utils/StripePromise";
 import { Elements } from "@stripe/react-stripe-js";
 import "react-calendar/dist/Calendar.css";
@@ -14,20 +17,54 @@ import PaymentModal from "../../components/PaymentModal/PaymentModal";
 
 const BookingPage = () => {
   const [date, setDate] = useState(new Date());
+  const [chosenDateMessage, setChosenDateMessage] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
   const [formattedDateTime, setFormattedDateTime] = useState("");
+  const [isPaymentPending, setIsPaymentPending] = useState(false);
   const [contactDetails, setContactDetails] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [availableSlots, setAvailableSlots] = useState([]);
   const [blockedDates, setBlockedDates] = useState([]);
   const [clientSecret, setClientSecret] = useState("");
-  const [bookingId, setBookingId] = useState("");
+  const [bookingId, setBookingId] = useState(null);
+  const [isRescheduling, setIsRescheduling] = useState(false);
   const [isBookingComplete, setIsBookingComplete] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  const navigate = useNavigate();
+  const { bookingId: paramBookingId } = useParams();
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedTime("");
+    setFormattedDateTime("");
+    setIsPaymentPending(false);
+  };
+
+  // Check if we are in reschedule mode
+  useEffect(() => {
+    if (paramBookingId) {
+      setBookingId(paramBookingId);
+      setIsRescheduling(true);
+      fetchBookingDetails(paramBookingId);
+    }
+  }, [paramBookingId]);
+
+  const fetchBookingDetails = async (id) => {
+    try {
+      const response = await getBookingDetails(id);
+      setDate(new Date(response.date));
+      setSelectedTime(response.time);
+      setChosenDateMessage(`Rescheduling booking: ${response.time}`);
+    } catch (error) {
+      setErrorMessage("Failed to fetch booking details.");
+    }
+  };
 
   useEffect(() => {
     const savedDetails = JSON.parse(localStorage.getItem("contactDetails"));
@@ -63,6 +100,36 @@ const BookingPage = () => {
     fetchBlockedDates();
   }, []);
 
+  const isDateBlocked = (currentDate) => {
+    const formattedDate = currentDate.toISOString().split("T")[0];
+    const dayOfWeek = currentDate.getDay();
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    // Check if the current date is blocked, weekend, or in the past
+    if (dayOfWeek === 0 || dayOfWeek === 6) {
+      return true; // Disable weekends (Saturday and Sunday)
+    }
+
+    if (currentDate < today || currentDate.getTime() === today.getTime()) {
+      return true; // Disable past dates and today
+    }
+
+    if (blockedDates.includes(formattedDate)) {
+      return true; // Disable blocked dates
+    }
+
+    return false;
+  };
+
+  const isCurrentDate = () => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const selectedDate = new Date(date);
+    selectedDate.setHours(0, 0, 0, 0);
+    return selectedDate.getTime() === today.getTime();
+  };
+
   const generateTimes = () => {
     const times = [];
     for (let hour = 9; hour <= 16; hour++) {
@@ -73,6 +140,15 @@ const BookingPage = () => {
   };
 
   const filterAvailableTimes = () => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const selectedDate = new Date(date);
+    selectedDate.setHours(0, 0, 0, 0);
+
+    if (selectedDate.getTime() === today.getTime()) {
+      return [];
+    }
+
     const allTimes = generateTimes();
     return allTimes.filter((time) => availableSlots.includes(time));
   };
@@ -85,9 +161,35 @@ const BookingPage = () => {
     }`;
   };
 
+  const updateChosenMessage = (date, time) => {
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    const formattedDate = date.toLocaleDateString(undefined, options);
+
+    if (!time) {
+      setChosenDateMessage(`You have chosen: ${formattedDate}`);
+    } else {
+      setChosenDateMessage(
+        `You have selected: ${formattedDate} at ${time.slice(0, 5)} ${
+          parseInt(time.slice(0, 2)) >= 12 ? "PM" : "AM"
+        }`
+      );
+    }
+  };
+
   const handleBooking = async () => {
     if (!selectedTime) {
       setErrorMessage("Please select a time.");
+      return;
+    }
+
+    if (
+      !contactDetails ||
+      !contactDetails.street ||
+      !contactDetails.postcode ||
+      !contactDetails.city ||
+      !contactDetails.country
+    ) {
+      setErrorMessage("Please complete your contact details.");
       return;
     }
 
@@ -96,60 +198,60 @@ const BookingPage = () => {
       address: `${contactDetails.street}, ${contactDetails.postcode}, ${contactDetails.city}, ${contactDetails.country}`,
       date: date.toISOString().split("T")[0],
       time: selectedTime,
+      bookingId,
     };
 
     try {
-      const response = await createBooking(bookingDetails);
-      if (response && response.message) {
+      if (isRescheduling) {
+        const response = await rescheduleBooking(bookingDetails);
         setSuccessMessage(response.message);
         setErrorMessage("");
-        setBookingId(response.bookingId);
-
-        // Fetch updated blocked dates after booking
-        const blockedResponse = await getBlockedDates();
-        setBlockedDates(blockedResponse || []);
-
-        const paymentResponse = await createPaymentIntent({
-          bookingId: response.bookingId,
-          amount: 30000,
-          currency: "gbp",
-        });
-
-        setClientSecret(paymentResponse.clientSecret);
-        openModal();
         setIsBookingComplete(true);
+        setIsPaymentPending(false);
+        navigate(`/profile/${bookingId}`);
+        return; // Skip payment modal for reschedule
+      } else {
+        const response = await createBooking(bookingDetails);
+        if (response && response.message) {
+          setSuccessMessage(response.message);
+          setErrorMessage("");
+          setBookingId(response.bookingId);
+
+          const paymentResponse = await createPaymentIntent({
+            bookingId: response.bookingId,
+            amount: 30000,
+            currency: "gbp",
+          });
+
+          setClientSecret(paymentResponse.clientSecret);
+          setIsPaymentPending(true);
+          openModal(); // Open the payment modal for new booking
+          setIsBookingComplete(true);
+        }
       }
     } catch (error) {
       console.error("Error occurred:", error);
-      setErrorMessage("Failed to create booking.");
+      setErrorMessage("Failed to create or reschedule booking.");
     }
   };
 
-  const isDateBlocked = (currentDate) => {
-    const formattedDate = currentDate.toISOString().split("T")[0];
-    const dayOfWeek = currentDate.getDay();
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+  const handleModalClose = () => {
+    closeModal();
+    resetBookingState(); // Reset the booking to a fresh state when the modal is closed
+  };
 
-    if (dayOfWeek === 0 || dayOfWeek === 6) {
-      return true;
-    }
-
-    if (currentDate < today) {
-      return true;
-    }
-
-    if (blockedDates.includes(formattedDate)) {
-      return true;
-    }
-
-    return false;
+  const resetBookingState = () => {
+    // Reset booking-related state to allow for a fresh booking
+    setSelectedTime("");
+    setFormattedDateTime("");
+    setIsPaymentPending(false);
+    setIsBookingComplete(false);
+    setBookingId(null); // Reset the bookingId to allow a fresh booking
   };
 
   return (
     <div className="booking">
       <h1 className="booking__title">Book an Appointment</h1>
-
       {errorMessage && <p className="booking__error">{errorMessage}</p>}
       {successMessage && <p className="booking__success">{successMessage}</p>}
 
@@ -159,11 +261,16 @@ const BookingPage = () => {
             setDate(newDate);
             setSelectedTime("");
             setFormattedDateTime("");
+            updateChosenMessage(newDate, "");
           }}
           value={date}
           tileDisabled={({ date: currentDate }) => isDateBlocked(currentDate)}
         />
       </div>
+
+      {chosenDateMessage && (
+        <p className="booking__confirmation">{chosenDateMessage}</p>
+      )}
 
       <div className="booking__times">
         <ul className="booking__list">
@@ -172,7 +279,9 @@ const BookingPage = () => {
               <button
                 onClick={() => {
                   setSelectedTime(time);
-                  setFormattedDateTime(formatDateTime(date, time));
+                  const formatted = formatDateTime(date, time);
+                  setFormattedDateTime(formatted);
+                  updateChosenMessage(date, time);
                 }}
                 className={`booking__button ${
                   selectedTime === time ? "selected" : ""
@@ -186,26 +295,27 @@ const BookingPage = () => {
         </ul>
       </div>
 
-      {formattedDateTime && (
-        <p className="booking__confirmation">
-          You have selected: <strong>{formattedDateTime}</strong>
-        </p>
-      )}
-
-      {!isBookingComplete ? (
+      {!isCurrentDate() && !isBookingComplete ? (
         <button className="booking__confirm" onClick={handleBooking}>
           Confirm Booking
         </button>
-      ) : (
-        <Elements stripe={stripePromise}>
-          <PaymentModal
-            isOpen={isModalOpen}
-            handleCloseModal={closeModal}
-            clientSecret={clientSecret}
-            bookingId={bookingId}
-            contactDetails={contactDetails}
-          />
-        </Elements>
+      ) : null}
+
+      {isBookingComplete && (
+        <>
+          <button className="booking__reopen-modal" onClick={openModal}>
+            Reopen Payment Modal
+          </button>
+          <Elements stripe={stripePromise}>
+            <PaymentModal
+              isOpen={isModalOpen}
+              handleCloseModal={handleModalClose}
+              clientSecret={clientSecret}
+              bookingId={bookingId}
+              contactDetails={contactDetails}
+            />
+          </Elements>
+        </>
       )}
     </div>
   );

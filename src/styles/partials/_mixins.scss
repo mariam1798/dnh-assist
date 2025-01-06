@@ -102,6 +102,19 @@
     color: $primary-text-color;
   }
 }
+@mixin territary-button {
+  @include custom-button;
+  background-color: $primary-accent-color;
+  color: $primary-background-color;
+  border-radius: 10px;
+  border: solid 2px $primary-background-color;
+
+  &:hover {
+    background-color: $primary-background-color;
+    border: solid 2px $primary-accent-color;
+    color: $primary-accent-color;
+  }
+}
 
 @mixin text-field {
   width: 100%;

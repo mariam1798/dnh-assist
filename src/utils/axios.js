@@ -20,6 +20,19 @@ const createPaymentIntent = async (paymentDetails) => {
     );
   }
 };
+const unblockBlockedDates = async (bookingId) => {
+  try {
+    const response = await axios.delete(
+      `${process.env.REACT_APP_API_BASE_URL}/booking/blocked/${bookingId}`
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Error unblocking dates:", error);
+    throw new Error("Failed to unblock dates.");
+  }
+};
+
 const confirmPayment = async (data) => {
   try {
     const response = await axios.post(
@@ -67,7 +80,7 @@ const getBookedSlots = async (date) => {
   }
 };
 
-export const getBlockedDates = async () => {
+const getBlockedDates = async () => {
   try {
     const response = await axios.get(
       `${process.env.REACT_APP_API_BASE_URL}/booking/block`
@@ -78,7 +91,41 @@ export const getBlockedDates = async () => {
     throw error;
   }
 };
+const getBookingDetails = async (bookingId) => {
+  const response = await axios.get(
+    `${process.env.REACT_APP_API_BASE_URL}/booking/${bookingId}`
+  );
+  return response.data;
+};
 
+const cancelBooking = async (bookingId) => {
+  const response = await axios.delete(
+    `${process.env.REACT_APP_API_BASE_URL}/booking/cancel/${bookingId}`
+  );
+  return response.data;
+};
+
+const rescheduleBooking = async (data) => {
+  // Ensure that the bookingId is included in the data or passed explicitly
+  const { bookingId } = data;
+
+  // Validate bookingId
+  if (!bookingId) {
+    throw new Error("Booking ID is required to reschedule the booking.");
+  }
+
+  // Make the API request with the proper URL and data
+  try {
+    const response = await axios.patch(
+      `${process.env.REACT_APP_API_BASE_URL}/booking/reschedule/${bookingId}`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error rescheduling booking:", error);
+    throw new Error("Failed to reschedule the booking.");
+  }
+};
 const getUser = (userId) => {
   return axios.get(`${process.env.REACT_APP_API_BASE_URL}/users/${userId}`);
 };
@@ -95,4 +142,9 @@ export {
   getUsers,
   createPaymentIntent,
   confirmPayment,
+  getBlockedDates,
+  rescheduleBooking,
+  cancelBooking,
+  getBookingDetails,
+  unblockBlockedDates,
 };

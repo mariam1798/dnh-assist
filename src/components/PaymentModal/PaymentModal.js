@@ -9,8 +9,9 @@ import {
   CardCvcElement,
 } from "@stripe/react-stripe-js";
 import close from "../../assets/images/icons/close.svg";
-import "./PaymentModal.scss";
 import { BeatLoader } from "react-spinners";
+import { useNavigate } from "react-router-dom";
+import "./PaymentModal.scss";
 
 const PaymentModal = ({
   isOpen,
@@ -21,11 +22,32 @@ const PaymentModal = ({
 }) => {
   const stripe = useStripe();
   const elements = useElements();
+  const navigate = useNavigate();
 
   const [cardName, setCardName] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [discountCode, setDiscountCode] = useState(""); // For the discount code input
+  const [isDiscountApplied, setIsDiscountApplied] = useState(false); // To check if discount is applied
+  const [price, setPrice] = useState(300); // Default price
+
+  const handleDiscountCodeChange = (e) => {
+    setDiscountCode(e.target.value);
+  };
+
+  const validateDiscountCode = () => {
+    // Assuming 'DISCOUNT100' is the valid discount code
+    if (discountCode === "DISCOUNT100") {
+      setPrice(0); // Apply 100% discount
+      setIsDiscountApplied(true);
+      setErrorMessage(""); // Clear error if code is valid
+    } else {
+      setIsDiscountApplied(false);
+      setPrice(300); // Reset price to original value
+      setErrorMessage("Invalid discount code");
+    }
+  };
 
   const handlePayment = async (e) => {
     e.preventDefault();
@@ -38,10 +60,8 @@ const PaymentModal = ({
     setLoading(true);
 
     try {
-      // Get the CardNumberElement instance
       const cardNumberElement = elements.getElement(CardNumberElement);
 
-      // Confirm Stripe payment
       const { error, paymentIntent } = await stripe.confirmCardPayment(
         clientSecret,
         {
@@ -53,26 +73,31 @@ const PaymentModal = ({
       );
 
       if (error) {
-        // Handle Stripe error
         console.error("Stripe error:", error);
         setErrorMessage(error.message || "Payment failed. Please try again.");
         setLoading(false);
         return;
       }
 
-      // Check payment status
       if (paymentIntent.status === "succeeded") {
         try {
-          // Confirm payment in the backend
           const response = await confirmPayment({
-            bookingId, // Ensure bookingId is passed correctly
+            bookingId,
             paymentId: paymentIntent.id,
-            customerEmail: contactDetails?.email || "mariam.alneamah@gmail.com", // Use dynamic customer email
+            customerEmail: contactDetails?.email || "mariam.alneamah@gmail.com",
           });
+          if (bookingId) {
+            localStorage.setItem("bookingId", bookingId);
+          }
 
           console.log("Payment confirmation response:", response);
           setSuccessMessage("Payment successful! Booking confirmed.");
           setErrorMessage("");
+
+          // Redirect to profile page with bookingId
+          setTimeout(() => {
+            navigate(`/profile/${bookingId}`);
+          }, 2000);
         } catch (backendError) {
           console.error("Backend confirmation error:", backendError);
           setErrorMessage(
@@ -118,6 +143,31 @@ const PaymentModal = ({
 
       <div className="modal__container">
         <h2 className="modal__title">Confirm Payment</h2>
+
+        {/* Discount Code Section */}
+        <div className="modal__discount">
+          <input
+            type="text"
+            value={discountCode}
+            onChange={handleDiscountCodeChange}
+            className="modal__input"
+            placeholder="Enter Discount Code"
+          />
+          <button
+            type="button"
+            className="modal__apply"
+            onClick={validateDiscountCode}
+          >
+            Apply Discount
+          </button>
+          {errorMessage && <p className="modal__error">{errorMessage}</p>}
+        </div>
+
+        {/* Displaying the price */}
+        <p className="modal__price">
+          Total Amount: <strong>£{price}</strong>
+        </p>
+
         <form className="modal__form" onSubmit={handlePayment}>
           <div className="modal__group">
             <label htmlFor="cardName" className="modal__label">
@@ -160,7 +210,12 @@ const PaymentModal = ({
             >
               {loading ? "Processing..." : "Pay Now"}
             </button>
-            <button onClick={handleCloseModal} className="modal__cancel">
+            <button
+              type="button"
+              onClick={handleCloseModal}
+              className="modal__cancel"
+              disabled={loading}
+            >
               Cancel
             </button>
           </div>

@@ -10,20 +10,36 @@
   width: 100%;
   height: 100%;
   padding: 2rem;
+  z-index: 1050;
   cursor: pointer;
   color: $primary-text-color;
   @include tablet {
     border-radius: $border-radius;
-    top: 20%;
+    top: 10%;
     left: 20%;
     max-width: 60%;
-    height: 40rem;
+    height: 47rem;
     @include desktop {
-      width: 50%;
+      max-width: 40%;
       top: 10%;
-      left: 25%;
-      height: 45rem;
+      height: 47rem;
     }
+    &--cancel {
+      @include tablet {
+        top: 15%;
+        height: 17rem;
+      }
+      @include desktop {
+        top: 30%;
+        left: 30%;
+        min-height: 12vh;
+        margin: 0 auto;
+      }
+    }
+  }
+  &__price {
+    display: flex;
+    justify-content: flex-end;
   }
   &__icon {
     display: flex;
@@ -37,12 +53,29 @@
 
   &__container {
     margin-top: 10px;
+    position: relative; // Make sure it's positioned relative to the modal
+    z-index: 5;
   }
 
   &__title {
     font-size: 1.5rem;
     text-align: center;
-    margin-bottom: 20px;
+    margin-top: 5rem;
+    @include tablet {
+      margin-top: 2rem;
+    }
+  }
+  &__loading {
+    position: absolute; // Position the loader absolutely
+    top: 50%; // Center the loader vertically
+    left: 50%; // Center the loader horizontally
+    transform: translate(-50%, -50%); // Adjust position to truly center it
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; // Make sure it takes full width of the modal
+    height: 100%; // Make sure it takes full height of the modal
+    z-index: 10; // Ensure it's above other content
   }
 
   &__group {
@@ -53,6 +86,10 @@
     font-weight: bold;
     margin-bottom: 5px;
     display: block;
+  }
+  &__apply {
+    @include primary-button;
+    margin-top: 1rem;
   }
 
   &__input,
@@ -76,9 +113,11 @@
   }
 
   &__actions {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
+    margin-top: 2rem;
+    @include tablet {
+      display: flex;
+      justify-content: space-between;
+    }
   }
 
   &__submit,
@@ -87,16 +126,27 @@
     cursor: pointer;
     border: none;
     border-radius: 5px;
+    display: flex;
+    width: 100%;
+    margin-top: 1rem;
+    @include tablet {
+      max-width: 10rem;
+    }
+    @include desktop {
+      min-width: 40%;
+    }
+    &:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
   }
 
   &__submit {
-    background-color: #28a745;
-    color: white;
+    @include primary-button;
   }
 
   &__cancel {
-    background-color: #dc3545;
-    color: white;
+    @include territary-button;
   }
 }
 

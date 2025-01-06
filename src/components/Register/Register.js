@@ -214,7 +214,7 @@ export default function Register() {
 
         <div className="register__address">
           <label className="register__label register__label--address">
-            Street:
+            House number and Street:
             <input
               type="text"
               name="street"

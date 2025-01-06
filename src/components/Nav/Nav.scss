@@ -4,9 +4,10 @@
 .nav {
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 900; /* Lower than the modal */
   background-color: rgba($primary-background-color, 0.6);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
   @include tablet {
     display: flex;
     align-items: center;

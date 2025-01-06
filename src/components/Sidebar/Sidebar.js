@@ -5,7 +5,6 @@ import { useNavigate, Link } from "react-router-dom";
 import "./Sidebar.scss";
 import DashboardIcon from "../../assets/images/icons/dashboard.png";
 import BookingsIcon from "../../assets/images/icons/calender.png";
-import ProfileIcon from "../../assets/images/icons/profile.png";
 import HelpIcon from "../../assets/images/icons/help.png";
 import Logo from "../../assets/images/logo/logo1.svg";
 import close from "../../assets/images/icons/close.svg";
@@ -18,7 +17,6 @@ const Sidebar = () => {
   const menuItems = [
     { icon: DashboardIcon, label: "Dashboard", path: "/" },
     { icon: BookingsIcon, label: "Bookings", path: "/register" },
-    { icon: ProfileIcon, label: "My Profile", path: "/profile" },
     { icon: HelpIcon, label: "Help & Support", path: "/help", id: "help" },
   ];
 

@@ -13,11 +13,13 @@ export default function Hero() {
   return (
     <div className="hero">
       <div className="hero__content">
-        <h1 className="hero__title">Connect with Mentors!</h1>
-        <p className="hero__subtitle">Provide higher quality treatments now!</p>
+        <h1 className="hero__title">Book your Tupel Scan!</h1>
+        <p className="hero__subtitle">
+          Your First Step to High-Quality Treatments!
+        </p>
         <div className="hero__actions">
           <button className="hero__primary" onClick={handleConnectClick}>
-            Connect
+            Book Now
           </button>
           <button className="hero__secondary">Learn more</button>
         </div>
