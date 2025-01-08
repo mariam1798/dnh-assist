@@ -14,6 +14,8 @@ import { Elements } from "@stripe/react-stripe-js";
 import "react-calendar/dist/Calendar.css";
 import "./BookingPage.scss";
 import PaymentModal from "../../components/PaymentModal/PaymentModal";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const BookingPage = () => {
   const [date, setDate] = useState(new Date());
@@ -208,7 +210,11 @@ const BookingPage = () => {
         setErrorMessage("");
         setIsBookingComplete(true);
         setIsPaymentPending(false);
-        navigate(`/profile/${bookingId}`);
+        toast.success("Booking Rescheduled successfully");
+        setTimeout(() => {
+          navigate(`/profile/${bookingId}`);
+        }, 2000);
+
         return; // Skip payment modal for reschedule
       } else {
         const response = await createBooking(bookingDetails);
@@ -303,9 +309,6 @@ const BookingPage = () => {
 
       {isBookingComplete && (
         <>
-          <button className="booking__reopen-modal" onClick={openModal}>
-            Reopen Payment Modal
-          </button>
           <Elements stripe={stripePromise}>
             <PaymentModal
               isOpen={isModalOpen}
@@ -317,6 +320,17 @@ const BookingPage = () => {
           </Elements>
         </>
       )}
+      <ToastContainer
+        position="top-center"
+        autoClose={5000} // Duration before toast disappears
+        hideProgressBar={false} // Show the progress bar (optional)
+        newestOnTop={false} // Whether to show the newest toast on top
+        closeOnClick={true} // Whether the toast should close when clicked
+        rtl={false} // For RTL languages (optional)
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 };

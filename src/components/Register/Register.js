@@ -135,7 +135,7 @@ export default function Register() {
         )}
 
         <label className="register__label">
-          Name:
+          Dentist Name:
           <input
             type="text"
             name="name"
@@ -213,22 +213,24 @@ export default function Register() {
         />
 
         <div className="register__address">
-          <label className="register__label register__label--address">
-            House number and Street:
-            <input
-              type="text"
-              name="street"
-              value={formData.street}
-              onChange={handleChange}
-              className={`register__input ${
-                formErrors.street ? "register__input--error" : ""
-              }`}
-              placeholder="Enter your street"
-            />
-          </label>
-          {formErrors.street && (
-            <p className="register__error">{formErrors.street}</p>
-          )}
+          <div className="register__hold">
+            <label className="register__label register__label--address">
+              House number and Street:
+              <input
+                type="text"
+                name="street"
+                value={formData.street}
+                onChange={handleChange}
+                className={`register__input ${
+                  formErrors.street ? "register__input--error" : ""
+                }`}
+                placeholder="Enter your street"
+              />
+            </label>
+            {formErrors.street && (
+              <p className="register__error">{formErrors.street}</p>
+            )}
+          </div>
 
           <label className=" register__label register__label--address">
             Postcode:

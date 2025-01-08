@@ -92,6 +92,9 @@
     &--textarea {
       min-height: 4rem;
     }
+    &--error {
+      margin-bottom: 0;
+    }
   }
   &__address {
     width: 100%;
@@ -141,6 +144,8 @@
   }
   &__error {
     font-size: 0.7rem;
+    display: flex;
+    align-items: self-end;
   }
   &__name {
     padding: 0;
