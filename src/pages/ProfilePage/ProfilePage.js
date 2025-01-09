@@ -93,9 +93,10 @@ const ProfilePage = () => {
       {isCancelled ? (
         <div className="profile__message">
           <div className="profile__container">
-            <h1 className="profile__title">
-              Your booking has been cancelled successfully!
-            </h1>
+            <h1 className="profile__title">Your booking has been cancelled!</h1>
+            <h3 className="profile__subtitle">
+              Please check your email for further details.
+            </h3>
             <div className="profile__hold">
               <p className="profile__booking">
                 If you'd like to make a new{" "}

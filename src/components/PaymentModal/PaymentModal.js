@@ -147,30 +147,6 @@ const PaymentModal = ({
       <div className="modal__container">
         <h2 className="modal__title">Confirm Payment</h2>
 
-        {/* Discount Code Section */}
-        <div className="modal__discount">
-          <input
-            type="text"
-            value={discountCode}
-            onChange={handleDiscountCodeChange}
-            className="modal__input"
-            placeholder="Enter Discount Code"
-          />
-          <button
-            type="button"
-            className="modal__apply"
-            onClick={validateDiscountCode}
-          >
-            Apply Discount
-          </button>
-          {errorMessage && <p className="modal__error">{errorMessage}</p>}
-        </div>
-
-        {/* Displaying the price */}
-        <p className="modal__price">
-          Total Amount: <strong>£{price}</strong>
-        </p>
-
         <form className="modal__form" onSubmit={handlePayment}>
           <div className="modal__group">
             <label htmlFor="cardName" className="modal__label">

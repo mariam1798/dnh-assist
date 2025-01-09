@@ -12,6 +12,13 @@
   @include desktop {
     width: 55rem;
   }
+  &__links {
+    color: white;
+  }
+  &__subtitle {
+    display: flex;
+    justify-content: center;
+  }
   &__container {
     padding: 2rem;
     border-radius: 10px;

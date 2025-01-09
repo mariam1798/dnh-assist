@@ -33,6 +33,9 @@ const BookingPage = () => {
   const [isRescheduling, setIsRescheduling] = useState(false);
   const [isBookingComplete, setIsBookingComplete] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [discountCode, setDiscountCode] = useState("");
+  const [price, setPrice] = useState(1); // Default price
+  const [isDiscountApplied, setIsDiscountApplied] = useState(false);
 
   const navigate = useNavigate();
   const { bookingId: paramBookingId } = useParams();
@@ -101,6 +104,25 @@ const BookingPage = () => {
 
     fetchBlockedDates();
   }, []);
+
+  const handleDiscountCodeChange = (e) => {
+    setDiscountCode(e.target.value);
+  };
+
+  const validateDiscountCode = () => {
+    // Example: 'DISCOUNT100' is the valid discount code
+    if (discountCode === "DISCOUNT100") {
+      setPrice(0); // Apply 100% discount
+      setIsDiscountApplied(true);
+      setErrorMessage(""); // Clear error if the code is valid
+      toast.success("Discount code applied successfully!");
+    } else {
+      setIsDiscountApplied(false);
+      setPrice(1); // Reset price to the original value
+      setErrorMessage("Invalid discount code");
+      toast.error("Invalid discount code.");
+    }
+  };
 
   const isDateBlocked = (currentDate) => {
     const formattedDate = currentDate.toISOString().split("T")[0];
@@ -225,7 +247,7 @@ const BookingPage = () => {
 
           const paymentResponse = await createPaymentIntent({
             bookingId: response.bookingId,
-            amount: 1,
+            amount: price,
             currency: "gbp",
           });
 
@@ -300,6 +322,27 @@ const BookingPage = () => {
           ))}
         </ul>
       </div>
+      <div className="booking__discount">
+        <input
+          type="text"
+          value={discountCode}
+          onChange={handleDiscountCodeChange}
+          className="booking__input"
+          placeholder="Enter Discount Code"
+        />
+        <button
+          type="button"
+          className="booking__apply"
+          onClick={validateDiscountCode}
+        >
+          Apply Discount
+        </button>
+      </div>
+
+      {/* Displaying the price */}
+      <p className="booking__price">
+        Total Amount: <strong>£{price}</strong>
+      </p>
 
       {!isCurrentDate() && !isBookingComplete ? (
         <button className="booking__confirm" onClick={handleBooking}>

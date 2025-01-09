@@ -9,7 +9,9 @@ export default function Hero() {
   const handleConnectClick = () => {
     navigate("/register");
   };
-
+  const handleClick = () => {
+    navigate("/help");
+  };
   return (
     <div className="hero">
       <div className="hero__content">
@@ -21,7 +23,9 @@ export default function Hero() {
           <button className="hero__primary" onClick={handleConnectClick}>
             Book Now
           </button>
-          <button className="hero__secondary">Learn more</button>
+          <button className="hero__secondary" onClick={handleClick}>
+            Learn more
+          </button>
         </div>
       </div>
       <div className="hero__image">

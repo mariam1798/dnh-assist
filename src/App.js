@@ -9,6 +9,7 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import BookingPage from "./pages/BookingPage/BookingPage";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import "./App.scss";
+import HelpAndSupportPage from "./pages/HelpPage/HelpPage";
 
 const googleMapsApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
@@ -25,6 +26,7 @@ function App() {
             <Route path="/booking" element={<BookingPage />} />
             <Route path="/booking/:bookingId" element={<BookingPage />} />
             <Route path="/profile/:bookingId" element={<ProfilePage />} />
+            <Route path="/help" element={<HelpAndSupportPage />} />
           </Routes>
         </Elements>
       </BrowserRouter>
