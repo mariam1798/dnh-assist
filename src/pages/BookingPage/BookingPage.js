@@ -34,7 +34,7 @@ const BookingPage = () => {
   const [isBookingComplete, setIsBookingComplete] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [discountCode, setDiscountCode] = useState("");
-  const [price, setPrice] = useState(5); // Default price
+  const [price, setPrice] = useState(300); // Default price
   const [isDiscountApplied, setIsDiscountApplied] = useState(false);
 
   const navigate = useNavigate();
@@ -118,7 +118,7 @@ const BookingPage = () => {
       toast.success("Discount code applied successfully!");
     } else {
       setIsDiscountApplied(false);
-      setPrice(5); // Reset price to the original value
+      setPrice(300); // Reset price to the original value
       setErrorMessage("Invalid discount code");
       toast.error("Invalid discount code.");
     }
