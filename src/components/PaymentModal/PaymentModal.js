@@ -78,6 +78,9 @@ const PaymentModal = ({
         setLoading(false);
         return;
       }
+      if (paymentIntent) {
+        console.log("Payment Intent:", paymentIntent);
+      }
 
       if (paymentIntent.status === "succeeded") {
         try {

@@ -225,7 +225,7 @@ const BookingPage = () => {
 
           const paymentResponse = await createPaymentIntent({
             bookingId: response.bookingId,
-            amount: 30000,
+            amount: 100,
             currency: "gbp",
           });
 
