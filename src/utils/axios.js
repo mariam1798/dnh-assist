@@ -65,6 +65,14 @@ export const createBooking = async (bookingDetails) => {
   );
   return response.data;
 };
+
+const getBookings = async () => {
+  const response = await axios.get(
+    `${process.env.REACT_APP_API_BASE_URL}/booking/bookings`
+  );
+  return response.data;
+};
+
 const getBookedSlots = async (date) => {
   try {
     const response = await axios.get(
@@ -147,4 +155,5 @@ export {
   cancelBooking,
   getBookingDetails,
   unblockBlockedDates,
+  getBookings,
 };

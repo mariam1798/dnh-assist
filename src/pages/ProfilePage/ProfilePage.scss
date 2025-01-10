@@ -15,6 +15,9 @@
   &__links {
     color: white;
   }
+  &__booking {
+    color: black;
+  }
   &__subtitle {
     display: flex;
     justify-content: center;
@@ -34,6 +37,11 @@
   }
   &__item {
     padding-bottom: 0.5rem;
+    &--color {
+      color: black;
+      background-color: white;
+      margin-bottom: 1rem;
+    }
   }
   &__strong {
     padding-left: 0.2rem;
