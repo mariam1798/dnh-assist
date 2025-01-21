@@ -312,7 +312,7 @@ const BookingPage = () => {
                   updateChosenMessage(date, time);
                 }}
                 className={`booking__button ${
-                  selectedTime === time ? "selected" : ""
+                  selectedTime === time ? "booking__button--selected" : ""
                 }`}
               >
                 {time.slice(0, 5)}{" "}

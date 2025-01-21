@@ -147,6 +147,15 @@
   }
   &__button {
     @include custom-button;
+    &--selected {
+      background-color: $primary-accent-color;
+      border: none;
+      color: white;
+      &:hover {
+        background-color: $primary-accent-color;
+        color: white;
+      }
+    }
   }
   &__confirm {
     @include primary-button;
