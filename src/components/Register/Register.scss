@@ -145,7 +145,8 @@
   &__error {
     font-size: 0.7rem;
     display: flex;
-    align-items: self-end;
+    justify-content: flex-start;
+    color: red;
   }
   &__name {
     padding: 0;

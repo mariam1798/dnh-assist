@@ -76,10 +76,6 @@ const AddressSearch = ({ onAddressChange, errors }) => {
           />
         </Autocomplete>
       </label>
-      {errors?.street && <p className="address__error">{errors.street}</p>}
-      {errors?.postcode && <p className="address__error">{errors.postcode}</p>}
-      {errors?.city && <p className="address__error">{errors.city}</p>}
-      {errors?.country && <p className="address__error">{errors.country}</p>}
     </div>
   );
 };

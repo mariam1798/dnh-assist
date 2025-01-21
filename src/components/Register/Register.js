@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AddressSearch from "../AddressSearch/AddressSearch";
 import "./Register.scss";
+import { useEffect } from "react";
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -41,13 +42,14 @@ export default function Register() {
         break;
       case "phone":
         if (
-          !/^((\+44\s?7\d{3}|\(?07\d{3}\)?)\s?\d{3}\s?\d{3})$/.test(
+          !/^((\+44\s?7\d{3}|\(?07\d{3}\)?)\s?\d{3}\s?\d{3})$|^(?:\+44\s?1\d{2}|0\d{2})\s?\d{3,4}\s?\d{3,4}$/.test(
             value.trim()
           )
         ) {
           error = "Enter a valid UK phone number.";
         }
         break;
+
       case "street":
       case "postcode":
       case "city":
@@ -93,6 +95,15 @@ export default function Register() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const newErrors = {};
+    Object.keys(formData).forEach((key) => {
+      validateField(key, formData[key]);
+      if (!formData[key].trim()) {
+        newErrors[key] = `${
+          key.charAt(0).toUpperCase() + key.slice(1)
+        } is required.`;
+      }
+    });
 
     // Check if there are any errors
     const hasErrors = Object.values(formErrors).some((error) => error);
@@ -121,6 +132,15 @@ export default function Register() {
     localStorage.setItem("contactDetails", JSON.stringify(finalData));
     navigate("/booking");
   };
+  useEffect(() => {
+    const hasErrors = Object.values(formErrors).some((error) => error);
+    if (!hasErrors) {
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        global: "",
+      }));
+    }
+  }, [formErrors]);
 
   return (
     <form className="register" onSubmit={handleSubmit}>
@@ -130,9 +150,6 @@ export default function Register() {
         <h3 className="register__subtitle">
           Please fill in your details to book our product
         </h3>
-        {formErrors.global && (
-          <p className="register__error">{formErrors.global}</p>
-        )}
 
         <label className="register__label">
           Dentist Name:
@@ -146,10 +163,10 @@ export default function Register() {
             }`}
             placeholder="Enter your name"
           />
+          {formErrors.name && (
+            <p className="register__error">{formErrors.name}</p>
+          )}
         </label>
-        {formErrors.name && (
-          <p className="register__error">{formErrors.name}</p>
-        )}
 
         <label className="register__label">
           Patient Name:
@@ -163,10 +180,10 @@ export default function Register() {
             }`}
             placeholder="Enter the patient name"
           />
+          {formErrors.patientName && (
+            <p className="register__error">{formErrors.patientName}</p>
+          )}
         </label>
-        {formErrors.patientName && (
-          <p className="register__error">{formErrors.patientName}</p>
-        )}
 
         <label className="register__label">
           Email Address:
@@ -180,10 +197,10 @@ export default function Register() {
             }`}
             placeholder="Enter your email"
           />
+          {formErrors.email && (
+            <p className="register__error">{formErrors.email}</p>
+          )}
         </label>
-        {formErrors.email && (
-          <p className="register__error">{formErrors.email}</p>
-        )}
 
         <label className="register__label">
           Phone Number:
@@ -197,10 +214,10 @@ export default function Register() {
             }`}
             placeholder="Enter your phone number"
           />
+          {formErrors.phone && (
+            <p className="register__error">{formErrors.phone}</p>
+          )}
         </label>
-        {formErrors.phone && (
-          <p className="register__error">{formErrors.phone}</p>
-        )}
 
         <AddressSearch
           onAddressChange={handleAddressChange}
@@ -226,10 +243,10 @@ export default function Register() {
                 }`}
                 placeholder="Enter your street"
               />
+              {formErrors.street && (
+                <p className="register__error">{formErrors.street}</p>
+              )}
             </label>
-            {formErrors.street && (
-              <p className="register__error">{formErrors.street}</p>
-            )}
           </div>
 
           <label className=" register__label register__label--address">
@@ -244,10 +261,10 @@ export default function Register() {
               }`}
               placeholder="Enter your postcode"
             />
+            {formErrors.postcode && (
+              <p className="register__error">{formErrors.postcode}</p>
+            )}
           </label>
-          {formErrors.postcode && (
-            <p className="register__error">{formErrors.postcode}</p>
-          )}
         </div>
 
         <div className="register__address">
@@ -263,10 +280,10 @@ export default function Register() {
               }`}
               placeholder="Enter your city"
             />
+            {formErrors.city && (
+              <p className="register__error">{formErrors.city}</p>
+            )}
           </label>
-          {formErrors.city && (
-            <p className="register__error">{formErrors.city}</p>
-          )}
 
           <label className="register__label register__label--address">
             Country:
@@ -280,11 +297,14 @@ export default function Register() {
               }`}
               placeholder="Enter your country"
             />
+            {formErrors.country && (
+              <p className="register__error">{formErrors.country}</p>
+            )}
           </label>
-          {formErrors.country && (
-            <p className="register__error">{formErrors.country}</p>
-          )}
         </div>
+        {formErrors.global && (
+          <p className="register__error">{formErrors.global}</p>
+        )}
 
         <button className="register__submit" type="submit">
           Next
