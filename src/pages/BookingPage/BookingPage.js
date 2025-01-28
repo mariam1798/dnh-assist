@@ -7,6 +7,7 @@ import {
   getBlockedDates,
   getBookingDetails,
   rescheduleBooking,
+  createGoogleEvent,
 } from "../../utils/axios";
 import { useParams, useNavigate } from "react-router-dom";
 import stripePromise from "../../utils/StripePromise";
@@ -249,6 +250,7 @@ const BookingPage = () => {
             bookingId: response.bookingId,
             amount: price,
             currency: "gbp",
+            email: contactDetails.email,
           });
 
           setClientSecret(paymentResponse.clientSecret);
@@ -365,11 +367,11 @@ const BookingPage = () => {
       )}
       <ToastContainer
         position="top-center"
-        autoClose={5000} // Duration before toast disappears
-        hideProgressBar={false} // Show the progress bar (optional)
-        newestOnTop={false} // Whether to show the newest toast on top
-        closeOnClick={true} // Whether the toast should close when clicked
-        rtl={false} // For RTL languages (optional)
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={true}
+        rtl={false}
         pauseOnFocusLoss
         draggable
         pauseOnHover

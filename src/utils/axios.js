@@ -140,6 +140,12 @@ const getUser = (userId) => {
 const getUsers = () => {
   return axios.get(`${process.env.REACT_APP_API_BASE_URL}/users`);
 };
+const createGoogleEvent = (eventDetails) => {
+  return axios.post(
+    `${process.env.REACT_APP_API_BASE_URL}/create-google-event`,
+    eventDetails
+  );
+};
 
 export {
   getBookedSlots,
@@ -156,4 +162,5 @@ export {
   getBookingDetails,
   unblockBlockedDates,
   getBookings,
+  createGoogleEvent,
 };
