@@ -250,7 +250,7 @@ const BookingPage = () => {
             bookingId: response.bookingId,
             amount: price,
             currency: "gbp",
-            email: contactDetails.email,
+            receipt_email: contactDetails.email,
           });
 
           setClientSecret(paymentResponse.clientSecret);
