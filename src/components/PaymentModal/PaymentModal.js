@@ -67,8 +67,12 @@ const PaymentModal = ({
         {
           payment_method: {
             card: cardNumberElement,
-            billing_details: { name: cardName },
+            billing_details: {
+              name: cardName,
+              email: contactDetails.email, // Add receipt email here
+            },
           },
+          receipt_email: contactDetails.email, // Ensure Stripe sends a receipt
         }
       );
 
