@@ -87,7 +87,7 @@ const PaymentModal = ({
           const response = await confirmPayment({
             bookingId,
             paymentId: paymentIntent.id,
-            customerEmail: contactDetails?.email || "mariam.alneamah@gmail.com",
+            receipt_email: contactDetails.email,
           });
           if (bookingId) {
             localStorage.setItem("bookingId", bookingId);
